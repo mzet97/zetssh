@@ -14,30 +14,22 @@ public protocol SSHEngine {
     func authenticate(password: String) async throws
     func authenticate(privateKeyPath: URL, passphrase: String?) async throws
     func disconnect()
+    func sendData(_ data: [UInt8])
+    func resize(cols: Int, rows: Int)
+    var isConnected: Bool { get }
+    var isConnecting: Bool { get }
 }
 
+#if DEBUG
 public final class LibSSH2WrapperMock: SSHEngine {
     public init() {}
-    
-    public func connect(host: String, port: Int, username: String) async throws {
-        AppLogger.shared.log("Iniciando conexão (Mock) com \(host):\(port)...", category: .network, level: .info)
-        // Simulando delay de rede
-        try await Task.sleep(nanoseconds: 500_000_000)
-    }
-    
-    public func authenticate(password: String) async throws {
-        AppLogger.shared.log("Autenticando via senha (Mock)...", category: .security, level: .info)
-        // Simulando auth
-        try await Task.sleep(nanoseconds: 500_000_000)
-    }
-    
-    public func authenticate(privateKeyPath: URL, passphrase: String?) async throws {
-        AppLogger.shared.log("Autenticando via chave privada (Mock) em \(privateKeyPath.path)...", category: .security, level: .info)
-        // Simulando auth
-        try await Task.sleep(nanoseconds: 500_000_000)
-    }
-    
-    public func disconnect() {
-        AppLogger.shared.log("Desconectando (Mock)...", category: .network, level: .info)
-    }
+    public func connect(host: String, port: Int, username: String) async throws {}
+    public func authenticate(password: String) async throws {}
+    public func authenticate(privateKeyPath: URL, passphrase: String?) async throws {}
+    public func disconnect() {}
+    public func sendData(_ data: [UInt8]) {}
+    public func resize(cols: Int, rows: Int) {}
+    public var isConnected: Bool { false }
+    public var isConnecting: Bool { false }
 }
+#endif
