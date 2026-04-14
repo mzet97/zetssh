@@ -92,6 +92,12 @@ final class AppDatabase {
             }
         }
 
+        migrator.registerMigration("v3") { db in
+            try db.alter(table: "session") { t in
+                t.add(column: "privateKeyPath", .text)
+            }
+        }
+
         return migrator
     }
 }
