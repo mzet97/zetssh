@@ -18,15 +18,23 @@ public protocol SSHClientDelegate: AnyObject, Sendable {
 /// authenticate() estabelece a conexão com as credenciais fornecidas.
 public final class RealSSHEngine: SSHEngine {
 
+    private enum ConnectionState: Equatable {
+        case idle, connecting, connected, disconnecting
+    }
+
     private let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     private var channel: Channel?
     private var sshChildChannel: Channel?
+    private var connectionState: ConnectionState = .idle
 
     private var pendingHost: String = ""
     private var pendingPort: Int = AppConstants.defaultSSHPort
     private var pendingUsername: String = ""
 
     public weak var delegate: SSHClientDelegate?
+
+    public var isConnected: Bool { connectionState == .connected }
+    public var isConnecting: Bool { connectionState == .connecting }
 
     public init() {}
 
@@ -43,15 +51,27 @@ public final class RealSSHEngine: SSHEngine {
     }
 
     public func authenticate(password: String) async throws {
+        guard connectionState == .idle else {
+            throw SSHConnectionError.alreadyConnecting
+        }
+        connectionState = .connecting
         let authDelegate = PasswordAuthenticationDelegate(
             username: pendingUsername,
             password: password
         )
-        try await establishConnection(authDelegate: authDelegate)
+        do {
+            try await establishConnection(authDelegate: authDelegate)
+            connectionState = .connected
+        } catch {
+            connectionState = .idle
+            throw error
+        }
     }
 
     public func authenticate(privateKeyPath: URL, passphrase: String?) async throws {
-        // Post-MVP: autenticação por chave privada
+        guard connectionState == .idle else {
+            throw SSHConnectionError.alreadyConnecting
+        }
         AppLogger.shared.log(
             "Autenticação por chave ainda não implementada no RealSSHEngine.",
             category: .security, level: .warning
@@ -60,10 +80,19 @@ public final class RealSSHEngine: SSHEngine {
     }
 
     public func disconnect() {
-        AppLogger.shared.log("Desconectando SSH Nativo...", category: .network, level: .info)
+        guard connectionState == .connected || connectionState == .connecting else { return }
+        connectionState = .disconnecting
+        AppLogger.shared.log("Desconectando SSH...", category: .network, level: .info)
+        _ = sshChildChannel?.close()
         _ = channel?.close()
-        channel = nil
         sshChildChannel = nil
+        channel = nil
+        group.shutdownGracefully { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.connectionState = .idle
+                AppLogger.shared.log("EventLoopGroup encerrado.", category: .network, level: .info)
+            }
+        }
     }
 
     // MARK: - Helpers
@@ -153,7 +182,7 @@ public final class RealSSHEngine: SSHEngine {
     }
 
     deinit {
-        try? group.syncShutdownGracefully()
+        // group já é encerrado em disconnect(); o OS recicla os threads se deinit ocorrer antes
     }
 }
 
