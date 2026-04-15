@@ -7,6 +7,8 @@ struct SidebarView: View {
     /// Local highlight state — purely visual, does not drive detail content.
     @State private var highlightedSessionId: UUID?
     @State private var showingAddSession = false
+    @State private var showingImportSSHConfig = false
+    @StateObject private var sshConfigImportVM = SSHConfigImportViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -52,6 +54,14 @@ struct SidebarView: View {
                 }
                 .buttonStyle(.plain).padding(8)
 
+                Button {
+                    showingImportSSHConfig = true
+                } label: {
+                    Image(systemName: "square.and.arrow.down")
+                }
+                .buttonStyle(.plain).padding(8)
+                .help("Importar SSH Config…")
+
                 Spacer()
 
                 Button {
@@ -72,6 +82,13 @@ struct SidebarView: View {
             SessionFormView { newSession, credentials in
                 viewModel.save(newSession, credentials: credentials)
             }
+        }
+        .sheet(isPresented: $showingImportSSHConfig) {
+            SSHConfigImportView(
+                importVM: sshConfigImportVM,
+                sessionVM: viewModel,
+                isPresented: $showingImportSSHConfig
+            )
         }
     }
 
