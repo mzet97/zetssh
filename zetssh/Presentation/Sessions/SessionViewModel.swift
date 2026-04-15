@@ -35,9 +35,7 @@ final class SessionViewModel: ObservableObject {
             try AppDatabase.shared.dbWriter.write { db in try s.save(db) }
             switch credentials {
             case .password(let pw):
-                if !pw.isEmpty {
-                    try KeychainService.shared.save(password: pw, forSessionId: s.id)
-                }
+                try KeychainService.shared.save(password: pw, forSessionId: s.id)
                 try KeychainService.shared.deletePassphrase(forSessionId: s.id)
             case .privateKey(_, let passphrase):
                 try KeychainService.shared.deletePassword(forSessionId: s.id)
@@ -56,6 +54,7 @@ final class SessionViewModel: ObservableObject {
         do {
             try AppDatabase.shared.dbWriter.write { db in try session.delete(db) }
             try KeychainService.shared.deletePassword(forSessionId: session.id)
+            try KeychainService.shared.deletePassphrase(forSessionId: session.id)
         } catch {
             errorMessage = "Erro ao deletar sessão: \(error.localizedDescription)"
         }
