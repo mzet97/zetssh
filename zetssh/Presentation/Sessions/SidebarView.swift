@@ -63,8 +63,8 @@ struct SidebarView: View {
         }
         .navigationTitle("ZetSSH")
         .sheet(isPresented: $showingAddSession) {
-            SessionFormView { newSession, password in
-                viewModel.save(newSession, password: password)
+            SessionFormView { newSession, credentials in
+                viewModel.save(newSession, credentials: credentials)
             }
         }
     }

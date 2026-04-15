@@ -29,12 +29,23 @@ final class SessionViewModel: ObservableObject {
         )
     }
 
-    func save(_ session: Session, password: String) {
+    func save(_ session: Session, credentials: SessionCredentials) {
         var s = session
         do {
             try AppDatabase.shared.dbWriter.write { db in try s.save(db) }
-            if !password.isEmpty {
-                try KeychainService.shared.save(password: password, forSessionId: s.id)
+            switch credentials {
+            case .password(let pw):
+                if !pw.isEmpty {
+                    try KeychainService.shared.save(password: pw, forSessionId: s.id)
+                }
+                try KeychainService.shared.deletePassphrase(forSessionId: s.id)
+            case .privateKey(_, let passphrase):
+                try KeychainService.shared.deletePassword(forSessionId: s.id)
+                if let pp = passphrase {
+                    try KeychainService.shared.savePassphrase(pp, forSessionId: s.id)
+                } else {
+                    try KeychainService.shared.deletePassphrase(forSessionId: s.id)
+                }
             }
         } catch {
             errorMessage = "Erro ao salvar sessão: \(error.localizedDescription)"
