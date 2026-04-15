@@ -170,24 +170,29 @@ public final class RealSSHEngine: SSHEngine {
                 case .failure(let err): continuation.resume(throwing: err)
                 }
             }
-            conn.pipeline.handler(type: NIOSSHHandler.self).whenSuccess { sshHandler in
-                sshHandler.createChannel(promise, channelType: .session) { childChannel, _ in
-                    childChannel.pipeline.addHandler(
-                        SSHInboundDataHandler(delegate: capturedDelegate)
-                    ).flatMap {
-                        let ptyRequest = SSHChannelRequestEvent.PseudoTerminalRequest(
-                            wantReply: true,
-                            term: "xterm-256color",
-                            terminalCharacterWidth: 80,
-                            terminalRowHeight: 24,
-                            terminalPixelWidth: 800,
-                            terminalPixelHeight: 600,
-                            terminalModes: SSHTerminalModes([:])
-                        )
-                        return childChannel.triggerUserOutboundEvent(ptyRequest).flatMap {
-                            childChannel.triggerUserOutboundEvent(
-                                SSHChannelRequestEvent.ShellRequest(wantReply: true)
+            conn.pipeline.handler(type: NIOSSHHandler.self).whenComplete { result in
+                switch result {
+                case .failure(let err):
+                    promise.fail(err)
+                case .success(let sshHandler):
+                    sshHandler.createChannel(promise, channelType: .session) { childChannel, _ in
+                        childChannel.pipeline.addHandler(
+                            SSHInboundDataHandler(delegate: capturedDelegate)
+                        ).flatMap {
+                            let ptyRequest = SSHChannelRequestEvent.PseudoTerminalRequest(
+                                wantReply: false,
+                                term: "xterm-256color",
+                                terminalCharacterWidth: 80,
+                                terminalRowHeight: 24,
+                                terminalPixelWidth: 0,
+                                terminalPixelHeight: 0,
+                                terminalModes: SSHTerminalModes([:])
                             )
+                            return childChannel.triggerUserOutboundEvent(ptyRequest).flatMap {
+                                childChannel.triggerUserOutboundEvent(
+                                    SSHChannelRequestEvent.ShellRequest(wantReply: false)
+                                )
+                            }
                         }
                     }
                 }
