@@ -1,30 +1,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = SessionViewModel()
-    @State private var selectedSessionId: UUID?
+    @StateObject private var sessionVM = SessionViewModel()
+    @StateObject private var tabsVM   = TabsViewModel()
 
     var body: some View {
         NavigationSplitView {
-            SidebarView(
-                viewModel:         viewModel,
-                selectedSessionId: $selectedSessionId
-            )
+            SidebarView(viewModel: sessionVM, tabsVM: tabsVM)
         } detail: {
-            let session = viewModel.sessions.first { $0.id == selectedSessionId }
-            SessionDetailView(session: session)
+            MultiSessionView(tabsVM: tabsVM)
         }
         .alert("Erro", isPresented: Binding(
-            get: { viewModel.errorMessage != nil },
-            set: { if !$0 { viewModel.errorMessage = nil } }
+            get: { sessionVM.errorMessage != nil },
+            set: { if !$0 { sessionVM.errorMessage = nil } }
         )) {
-            Button("OK") { viewModel.errorMessage = nil }
+            Button("OK") { sessionVM.errorMessage = nil }
         } message: {
-            Text(viewModel.errorMessage ?? "")
+            Text(sessionVM.errorMessage ?? "")
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

@@ -2,12 +2,15 @@ import SwiftUI
 
 struct SidebarView: View {
     @ObservedObject var viewModel: SessionViewModel
-    @Binding var selectedSessionId: UUID?
+    @ObservedObject var tabsVM: TabsViewModel
+
+    /// Local highlight state — purely visual, does not drive detail content.
+    @State private var highlightedSessionId: UUID?
     @State private var showingAddSession = false
 
     var body: some View {
         VStack(spacing: 0) {
-            List(selection: $selectedSessionId) {
+            List(selection: $highlightedSessionId) {
                 Section("Sessions") {
                     ForEach(viewModel.sessions) { session in
                         NavigationLink(value: session.id) {
@@ -20,20 +23,24 @@ struct SidebarView: View {
                         }
                         .contextMenu {
                             Button("Deletar", role: .destructive) {
-                                viewModel.delete(session)
-                                if selectedSessionId == session.id { selectedSessionId = nil }
+                                deleteSession(session)
                             }
                         }
                     }
                     .onDelete(perform: deleteSessions)
                 }
             }
+            .onChange(of: highlightedSessionId) { newId in
+                guard let id = newId,
+                      let session = viewModel.sessions.first(where: { $0.id == id })
+                else { return }
+                tabsVM.open(session: session)
+            }
             .onDeleteCommand {
-                if let id = selectedSessionId,
-                   let session = viewModel.sessions.first(where: { $0.id == id }) {
-                    viewModel.delete(session)
-                    selectedSessionId = nil
-                }
+                guard let id = highlightedSessionId,
+                      let session = viewModel.sessions.first(where: { $0.id == id })
+                else { return }
+                deleteSession(session)
             }
             .listStyle(.sidebar)
 
@@ -48,16 +55,15 @@ struct SidebarView: View {
                 Spacer()
 
                 Button {
-                    if let id = selectedSessionId,
-                       let session = viewModel.sessions.first(where: { $0.id == id }) {
-                        viewModel.delete(session)
-                        selectedSessionId = nil
-                    }
+                    guard let id = highlightedSessionId,
+                          let session = viewModel.sessions.first(where: { $0.id == id })
+                    else { return }
+                    deleteSession(session)
                 } label: {
                     Image(systemName: "minus")
                 }
                 .buttonStyle(.plain).padding(8)
-                .disabled(selectedSessionId == nil)
+                .disabled(highlightedSessionId == nil)
             }
             .background(Color(NSColor.windowBackgroundColor))
         }
@@ -69,11 +75,19 @@ struct SidebarView: View {
         }
     }
 
+    // MARK: - Helpers
+
+    private func deleteSession(_ session: Session) {
+        if let tab = tabsVM.tabs.first(where: { $0.session.id == session.id }) {
+            tabsVM.close(tabId: tab.id)
+        }
+        viewModel.delete(session)
+        if highlightedSessionId == session.id { highlightedSessionId = nil }
+    }
+
     private func deleteSessions(at offsets: IndexSet) {
         for index in offsets {
-            let session = viewModel.sessions[index]
-            viewModel.delete(session)
-            if selectedSessionId == session.id { selectedSessionId = nil }
+            deleteSession(viewModel.sessions[index])
         }
     }
 }
