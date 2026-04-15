@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = BE5C2E17EF0C69207E974734 /* GRDB */; };
+		23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */; };
+		43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F049F29C05AC9097D336FB /* ThemeRegistry.swift */; };
 		4D75E19017FE25FC3BB7A44B /* SessionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */; };
 		54726AAC7E82CABDBE62575E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0264FD721A3FCCFED9642C /* GRDB */; };
 		594851FE18058F2BA8CAE1A6 /* KnownHostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */; };
@@ -17,6 +19,8 @@
 		CCB4D82AC5B44585253893FD /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD76DD03AA4FE6338304350B /* SessionTests.swift */; };
 		DE9365284879C264C873513C /* KeychainServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */; };
 		E5BB7EF65963601D6267B6E9 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */; };
+		E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */; };
+		EB4B2FF1F9A4ECDE7528CB3A /* TerminalProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */; };
 		F919F46C43830FF6D60B3EEF /* SessionFormValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		19F049F29C05AC9097D336FB /* ThemeRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ThemeRegistry.swift; path = zetssh/Data/Database/ThemeRegistry.swift; sourceTree = "<group>"; };
 		301DA1CE91F15D70E478937C /* PrimaryButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		5F897C2E9BFE2397B759465B /* SessionRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
@@ -38,6 +43,9 @@
 		6A7ED2E32F8ED8F700A715B0 /* zetssh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zetssh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74A5B905A8E3E5284D3ED137 /* SSHEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SSHEngine.swift; sourceTree = "<group>"; };
 		78509588C0AD416E8B868322 /* Folder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalProfile.swift; path = zetssh/Domain/Models/TerminalProfile.swift; sourceTree = "<group>"; };
+		7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalSettingsView.swift; path = zetssh/Presentation/Settings/TerminalSettingsView.swift; sourceTree = "<group>"; };
+		816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalPreferencesViewModel.swift; path = zetssh/Presentation/Settings/TerminalPreferencesViewModel.swift; sourceTree = "<group>"; };
 		82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestDatabase.swift; sourceTree = "<group>"; };
 		975545BB9E607A5DF0C692B9 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "KeychainService+DBKey.swift"; sourceTree = "<group>"; };
@@ -157,6 +165,10 @@
 				3CF78113008E86D7B1166ECE /* zetssh */,
 				96C429BC517E608FC2F4330A /* Frameworks */,
 				D2A13CBA8669F6E1A806A837 /* ZetSSHTests */,
+				7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */,
+				19F049F29C05AC9097D336FB /* ThemeRegistry.swift */,
+				816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */,
+				7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -429,6 +441,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4B2FF1F9A4ECDE7528CB3A /* TerminalProfile.swift in Sources */,
+				43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */,
+				23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */,
+				E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

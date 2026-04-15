@@ -4,6 +4,7 @@ struct SessionDetailView: View {
     let session: Session?
 
     @State private var connectionStarted = false
+    @State private var showingTerminalSettings = false
 
     var body: some View {
         Group {
@@ -30,6 +31,19 @@ struct SessionDetailView: View {
         .navigationTitle(session?.name ?? "ZetSSH")
         .onChange(of: session?.id) { _ in
             connectionStarted = false
+        }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    showingTerminalSettings = true
+                } label: {
+                    Label("Terminal Appearance", systemImage: "paintpalette")
+                }
+                .help("Configure terminal theme and font")
+            }
+        }
+        .sheet(isPresented: $showingTerminalSettings) {
+            TerminalSettingsView()
         }
     }
 

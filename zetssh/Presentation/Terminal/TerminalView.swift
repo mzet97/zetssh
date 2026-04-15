@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftTerm
 import NIOCore
+import GRDB
 
 // MARK: - SSHTerminalView
 
@@ -20,6 +21,17 @@ struct SSHTerminalView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> SwiftTerm.TerminalView {
         let termView = SwiftTerm.TerminalView(frame: .zero)
+
+        // Apply persisted terminal theme
+        if let profile = try? AppDatabase.shared.dbWriter.read({ db in
+            try TerminalProfile
+                .filter(Column("isDefault") == true)
+                .fetchOne(db)
+                ?? TerminalProfile.fetchOne(db)
+        }) {
+            ThemeRegistry.apply(profile: profile, to: termView)
+        }
+
         termView.terminalDelegate = context.coordinator
         context.coordinator.terminalView = termView
 

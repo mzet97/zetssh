@@ -98,6 +98,47 @@ final class AppDatabase {
             }
         }
 
+        migrator.registerMigration("v4") { db in
+            try db.create(table: "terminalProfile") { t in
+                t.column("id",         .text).primaryKey()
+                t.column("name",       .text).notNull()
+                t.column("foreground", .text).notNull()
+                t.column("background", .text).notNull()
+                t.column("cursor",     .text).notNull()
+                t.column("fontName",   .text).notNull()
+                t.column("fontSize",   .double).notNull()
+                t.column("isDefault",  .boolean).notNull().defaults(to: false)
+            }
+
+            let themes: [(name: String, bg: String, fg: String, cursor: String)] = [
+                ("Dracula",        "#282A36", "#F8F8F2", "#F8F8F2"),
+                ("Solarized Dark", "#002B36", "#839496", "#839496"),
+                ("One Dark",       "#282C34", "#ABB2BF", "#528BFF"),
+                ("Default Dark",   "#1E1E1E", "#D4D4D4", "#D4D4D4"),
+                ("Gruvbox",        "#282828", "#EBDBB2", "#EBDBB2"),
+            ]
+
+            for (index, theme) in themes.enumerated() {
+                try db.execute(
+                    sql: """
+                        INSERT INTO terminalProfile
+                            (id, name, foreground, background, cursor, fontName, fontSize, isDefault)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        """,
+                    arguments: [
+                        UUID().uuidString,
+                        theme.name,
+                        theme.fg,
+                        theme.bg,
+                        theme.cursor,
+                        "Menlo",
+                        13.0,
+                        index == 0 ? 1 : 0
+                    ]
+                )
+            }
+        }
+
         return migrator
     }
 }
