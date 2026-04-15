@@ -10,10 +10,11 @@ struct SessionDetailView: View {
             if let session {
                 if connectionStarted {
                     SSHTerminalView(
-                        host:      session.host,
-                        port:      session.port,
-                        username:  session.username,
-                        sessionId: session.id
+                        host:           session.host,
+                        port:           session.port,
+                        username:       session.username,
+                        sessionId:      session.id,
+                        privateKeyPath: session.privateKeyPath
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
