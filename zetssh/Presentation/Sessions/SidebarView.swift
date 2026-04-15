@@ -30,7 +30,7 @@ struct SidebarView: View {
                     .onDelete(perform: deleteSessions)
                 }
             }
-            .onChange(of: highlightedSessionId) { newId in
+            .onChange(of: highlightedSessionId) { _, newId in
                 guard let id = newId,
                       let session = viewModel.sessions.first(where: { $0.id == id })
                 else { return }

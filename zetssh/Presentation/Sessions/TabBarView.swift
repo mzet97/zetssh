@@ -6,9 +6,11 @@ struct TabBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 0) {
-                ForEach(tabsVM.tabs) { tab in
+                ForEach(Array(tabsVM.tabs.enumerated()), id: \.element.id) { index, tab in
+                    if index > 0 {
+                        Divider().frame(height: 20)
+                    }
                     tabButton(for: tab)
-                    Divider().frame(height: 20)
                 }
             }
         }
