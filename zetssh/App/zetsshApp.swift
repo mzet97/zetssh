@@ -1,17 +1,17 @@
-//
-//  zetsshApp.swift
-//  zetssh
-//
-//  Created by Matheus Zeitune on 14/04/26.
-//
-
 import SwiftUI
+import Sparkle
 
 @main
 struct zetsshApp: App {
+    private let updaterController: SPUStandardUpdaterController
+
     init() {
-        // Garante que o banco está OK antes da UI montar
         _ = AppDatabase.shared
+        updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
     }
 
     var body: some Scene {
@@ -23,6 +23,11 @@ struct zetsshApp: App {
         .windowToolbarStyle(.unified(showsTitle: true))
         .commands {
             CommandGroup(replacing: .newItem) {}
+            CommandGroup(after: .appInfo) {
+                Button("Verificar Atualizações...") {
+                    updaterController.updater.checkForUpdates()
+                }
+            }
         }
     }
 }
