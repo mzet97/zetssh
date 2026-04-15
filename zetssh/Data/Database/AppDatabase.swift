@@ -49,7 +49,21 @@ final class AppDatabase {
             try db.usePassphrase(encryptionKey)
         }
 
-        dbWriter = try DatabasePool(path: databaseURL.path, configuration: config)
+        // Try to open; if the file is incompatible (wrong key / old unencrypted DB),
+        // back it up and start fresh so the app never hard-crashes on launch.
+        do {
+            dbWriter = try DatabasePool(path: databaseURL.path, configuration: config)
+        } catch {
+            AppLogger.shared.log(
+                "Database inválido (\(error)). Recriando banco de dados.",
+                category: .database, level: .warning
+            )
+            let backupURL = directoryURL.appendingPathComponent("db.sqlite.bak")
+            try? fileManager.removeItem(at: backupURL)
+            try? fileManager.moveItem(at: databaseURL, to: backupURL)
+            dbWriter = try DatabasePool(path: databaseURL.path, configuration: config)
+        }
+
         try migrator.migrate(dbWriter)
 
         AppLogger.shared.log("Database inicializado em \(databaseURL.path)", category: .database, level: .info)
