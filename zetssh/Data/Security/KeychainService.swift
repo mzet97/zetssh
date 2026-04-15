@@ -1,7 +1,17 @@
 import Foundation
 import Security
 
-final class KeychainService {
+protocol KeychainServiceProtocol {
+    func save(password: String, forSessionId id: UUID) throws
+    func fetchPassword(forSessionId id: UUID) throws -> String?
+    func deletePassword(forSessionId id: UUID) throws
+    func savePassphrase(_ passphrase: String, forSessionId sessionId: UUID) throws
+    func fetchPassphrase(forSessionId sessionId: UUID) throws -> String?
+    func deletePassphrase(forSessionId sessionId: UUID) throws
+    func getOrCreateDatabaseEncryptionKey() throws -> String
+}
+
+final class KeychainService: KeychainServiceProtocol {
     static let shared = KeychainService()
     let serviceName = "com.zetssh.credentials"
     
