@@ -1,0 +1,82 @@
+<h2>ZetSSH — Roadmap para Produto Final</h2>
+<p class="subtitle">8 subsistemas em ordem alfabética · Cada um terá spec → plano → implementação com agentes paralelos</p>
+
+<div style="display:grid;gap:12px;margin-top:24px;">
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #4ade80;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#4ade80;min-width:36px;">A</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">Autenticação por Chave Privada</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Ed25519 · RSA · ECDSA · Passphrase · NSOpenPanel file picker · Keychain storage</div>
+    </div>
+    <div style="font-size:11px;background:#4ade8020;color:#4ade80;padding:4px 10px;border-radius:20px;white-space:nowrap;">🔓 CRÍTICO</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #60a5fa;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#60a5fa;min-width:36px;">B</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">Multi-tab SSH</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Múltiplas sessões simultâneas · TabView macOS · Cada tab = RealSSHEngine independente</div>
+    </div>
+    <div style="font-size:11px;background:#60a5fa20;color:#60a5fa;padding:4px 10px;border-radius:20px;white-space:nowrap;">🚀 ALTO IMPACTO</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #f59e0b;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#f59e0b;min-width:36px;">C</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">Suite de Testes</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">XCTest · TDD workflow · Unit + Integration · Mocks com SSHEngine protocol · CI local</div>
+    </div>
+    <div style="font-size:11px;background:#f59e0b20;color:#f59e0b;padding:4px 10px;border-radius:20px;white-space:nowrap;">🧪 QUALIDADE</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #a78bfa;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#a78bfa;min-width:36px;">D</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">Terminal Themes & Fontes</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Solarized · Dracula · One Dark · Font picker · SwiftTerm theme API · Persistência GRDB</div>
+    </div>
+    <div style="font-size:11px;background:#a78bfa20;color:#a78bfa;padding:4px 10px;border-radius:20px;white-space:nowrap;">✨ UX</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #34d399;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#34d399;min-width:36px;">E</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">SFTP / File Browser</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Panel lateral · Upload/Download · JSCH ou NIOSSH channel · Drag & drop macOS</div>
+    </div>
+    <div style="font-size:11px;background:#34d39920;color:#34d399;padding:4px 10px;border-radius:20px;white-space:nowrap;">📁 MÉDIO</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #f87171;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#f87171;min-width:36px;">F</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">SQLCipher Encryption</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">DB criptografado em repouso · Chave no Keychain já gerada · XCFramework SQLCipher</div>
+    </div>
+    <div style="font-size:11px;background:#f8717120;color:#f87171;padding:4px 10px;border-radius:20px;white-space:nowrap;">🔐 SEGURANÇA</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #fb923c;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#fb923c;min-width:36px;">G</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">SSH Config Import</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Parser ~/.ssh/config · Import hosts como sessões · Detecta chaves configuradas</div>
+    </div>
+    <div style="font-size:11px;background:#fb923c20;color:#fb923c;padding:4px 10px;border-radius:20px;white-space:nowrap;">⚙️ PRODUTIVIDADE</div>
+  </div>
+
+  <div style="background:var(--bg-secondary,#1e1e2e);border:1px solid #94a3b8;border-radius:10px;padding:16px;display:flex;align-items:center;gap:16px;">
+    <div style="font-size:28px;font-weight:900;color:#94a3b8;min-width:36px;">H</div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:15px;">App Icon + Notarização</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">AppIcon.appiconset · Info.plist · Sparkle updates · Notarize + staple · DMG distribuição</div>
+    </div>
+    <div style="font-size:11px;background:#94a3b820;color:#94a3b8;padding:4px 10px;border-radius:20px;white-space:nowrap;">📦 DISTRIBUIÇÃO</div>
+  </div>
+
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#ffffff10;border-radius:10px;font-size:13px;color:#aaa;line-height:1.6;">
+  <strong style="color:#fff;">Estratégia de execução:</strong> Cada subsistema usa <code>superpowers:subagent-driven-development</code> com agentes paralelos onde possível (<code>superpowers:dispatching-parallel-agents</code>). Testes (C) seguem <code>superpowers:test-driven-development</code>. Iniciando por <strong style="color:#4ade80;">A → Autenticação por Chave Privada</strong>.
+</div>

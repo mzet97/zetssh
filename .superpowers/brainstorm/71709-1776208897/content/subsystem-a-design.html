@@ -1,0 +1,65 @@
+<h2>Subsistema A — Autenticação por Chave Privada</h2>
+<p class="subtitle">Como o formulário de sessão deve funcionar com suporte a chave + senha?</p>
+
+<div class="section">
+  <h3>Opções de design do SessionFormView</h3>
+
+  <div class="cards">
+
+    <div class="card" data-choice="a1" onclick="toggleSelect(this)">
+      <div class="card-image" style="padding:16px;background:#0d1117;border-radius:6px;font-family:monospace;font-size:12px;">
+        <div style="background:#1e1e2e;border-radius:6px;padding:14px;">
+          <div style="color:#888;font-size:10px;margin-bottom:8px;">AUTENTICAÇÃO</div>
+          <div style="display:flex;gap:0;border:1px solid #333;border-radius:6px;overflow:hidden;margin-bottom:12px;">
+            <div style="flex:1;padding:6px;text-align:center;background:#4ade8030;color:#4ade80;font-size:11px;font-weight:600;">● Senha</div>
+            <div style="flex:1;padding:6px;text-align:center;color:#666;font-size:11px;">Chave Privada</div>
+          </div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;">Senha ••••••••</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A1 — Segmented Control</h3>
+        <p>Toggle "Senha / Chave Privada" no formulário. Simples, familiar para usuários macOS. Recomendado.</p>
+      </div>
+    </div>
+
+    <div class="card" data-choice="a2" onclick="toggleSelect(this)">
+      <div class="card-image" style="padding:16px;background:#0d1117;border-radius:6px;font-family:monospace;font-size:12px;">
+        <div style="background:#1e1e2e;border-radius:6px;padding:14px;">
+          <div style="color:#888;font-size:10px;margin-bottom:8px;">AUTENTICAÇÃO</div>
+          <div style="margin-bottom:8px;">
+            <label style="color:#aaa;font-size:11px;">☑ Usar chave privada</label>
+          </div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;margin-bottom:6px;">/Users/mzet97/.ssh/id_ed25519 <span style="color:#60a5fa;">Selecionar</span></div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;">Passphrase (opcional) ••••</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A2 — Checkbox expansível</h3>
+        <p>Checkbox "Usar chave privada" expande campos de path + passphrase. Menos cliques.</p>
+      </div>
+    </div>
+
+    <div class="card" data-choice="a3" onclick="toggleSelect(this)">
+      <div class="card-image" style="padding:16px;background:#0d1117;border-radius:6px;font-family:monospace;font-size:12px;">
+        <div style="background:#1e1e2e;border-radius:6px;padding:14px;">
+          <div style="color:#888;font-size:10px;margin-bottom:6px;">CREDENCIAIS</div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;margin-bottom:6px;">Usuário  admin</div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;margin-bottom:6px;">Senha  ••••••  <span style="color:#888;font-size:10px;">(opcional)</span></div>
+          <div style="background:#ffffff08;border-radius:4px;padding:8px;color:#aaa;font-size:11px;">/Users/.ssh/id_ed25519  <span style="color:#60a5fa;">...</span>  <span style="color:#888;font-size:10px;">(opcional)</span></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A3 — Campos paralelos</h3>
+        <p>Senha e chave coexistem no form, ambos opcionais. Motor tenta chave primeiro, depois senha.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px;padding:14px;background:#ffffff08;border-radius:8px;font-size:13px;">
+  <strong>Recomendação:</strong> <strong style="color:#4ade80;">A1 (Segmented Control)</strong> — padrão macOS, claro para o usuário, fácil de testar. SwiftNIO-SSH suporta <code>NIOSSHPrivateKey(pemRepresentation:passphrase:)</code> nativamente. Path salvo em GRDB (campo <code>privateKeyPath</code> na tabela session), passphrase no Keychain.
+</div>
+
+<p style="margin-top:20px;color:#aaa;font-size:13px;">Clique na opção preferida ou confirme no terminal.</p>

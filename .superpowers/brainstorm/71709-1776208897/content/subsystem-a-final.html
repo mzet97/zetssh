@@ -1,0 +1,42 @@
+<h2>Subsistema A — Design Final Aprovado</h2>
+<p class="subtitle">Autenticação por Chave Privada · Segmented Control · A1</p>
+
+<div class="section">
+  <h3>Arquitetura</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+    <div style="background:#1e1e2e;border-radius:8px;padding:14px;">
+      <div style="color:#4ade80;font-size:11px;font-weight:700;margin-bottom:8px;">DOMAIN / DATA</div>
+      <div style="font-size:12px;color:#ccc;line-height:1.8;">
+        <div>Session.swift → <code style="color:#60a5fa;">privateKeyPath: String?</code></div>
+        <div>AppDatabase → migração v3</div>
+        <div>KeychainService → passphrase CRUD</div>
+        <div>RealSSHEngine → NIOSSHPrivateKey PEM</div>
+      </div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:14px;">
+      <div style="color:#a78bfa;font-size:11px;font-weight:700;margin-bottom:8px;">PRESENTATION</div>
+      <div style="font-size:12px;color:#ccc;line-height:1.8;">
+        <div>SessionFormView → Picker "Senha | Chave"</div>
+        <div>NSOpenPanel → selecionar .pem/.pub</div>
+        <div>SecureField passphrase (opcional)</div>
+        <div>SessionViewModel.save → rota certa</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:16px;">
+  <h3>Fluxo de conexão com chave</h3>
+  <div style="background:#0d1117;border-radius:8px;padding:16px;font-family:monospace;font-size:12px;color:#ccc;line-height:2;">
+    <span style="color:#4ade80;">SessionFormView</span> → seleciona key path + passphrase<br>
+    → <span style="color:#60a5fa;">KeychainService</span>.save(passphrase, forSessionId:)<br>
+    → <span style="color:#f59e0b;">GRDB</span> session.privateKeyPath = "/path/id_ed25519"<br>
+    → <span style="color:#a78bfa;">SSHTerminalView</span> lê path + passphrase do Keychain<br>
+    → <span style="color:#34d399;">RealSSHEngine</span>.authenticate(privateKeyPath:passphrase:)<br>
+    → <span style="color:#f87171;">NIOSSHPrivateKey</span>(pemRepresentation: data, passphrase: ...)
+  </div>
+</div>
+
+<div style="margin-top:20px;padding:12px;border:1px solid #4ade80;border-radius:8px;font-size:13px;color:#4ade80;">
+  ✓ Design aprovado · Escrevendo spec A e encadeando B → H
+</div>
