@@ -64,6 +64,7 @@ public final class RealSSHEngine: SSHEngine {
         do {
             try await establishConnection(authDelegate: authDelegate)
             connectionState = .connected
+            await emitHostKeyWarningIfNeeded()
         } catch {
             connectionState = .idle
             throw error
@@ -110,6 +111,7 @@ public final class RealSSHEngine: SSHEngine {
         do {
             try await establishConnection(authDelegate: authDelegate)
             connectionState = .connected
+            await emitHostKeyWarningIfNeeded()
         } catch {
             connectionState = .idle
             throw error
@@ -134,6 +136,16 @@ public final class RealSSHEngine: SSHEngine {
 
     // MARK: - Helpers
 
+    /// Emite aviso de host desconhecido no terminal logo após conexão.
+    @MainActor
+    private func emitHostKeyWarningIfNeeded() async {
+        guard let warning = HostKeyVerificationService.shared.consumeTerminalWarning() else { return }
+        guard let child = sshChildChannel else { return }
+        var buffer = child.allocator.buffer(capacity: warning.utf8.count)
+        buffer.writeString(warning)
+        delegate?.onDataReceived(buffer)
+    }
+
     private func establishConnection(authDelegate: NIOSSHClientUserAuthenticationDelegate) async throws {
         let host = pendingHost
         let port = pendingPort
@@ -141,11 +153,11 @@ public final class RealSSHEngine: SSHEngine {
         // Captura delegate no MainActor antes de entrar em closures NIO (nonisolated)
         let capturedDelegate = delegate
 
-        AppLogger.shared.log("Conectando a \(host):\(port)...", category: .network, level: .info)
+        AppLogger.shared.log("[SSH 1/5] Iniciando TCP para \(host):\(port)...", category: .network, level: .info)
 
         let bootstrap = ClientBootstrap(group: group)
             .channelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
-            .connectTimeout(.seconds(10))
+            .connectTimeout(.seconds(15))
             .channelInitializer { channel in
                 channel.pipeline.addHandlers([
                     NIOSSHHandler(
@@ -159,48 +171,68 @@ public final class RealSSHEngine: SSHEngine {
                 ])
             }
 
-        let conn = try await bootstrap.connect(host: host, port: port).get()
+        let conn: Channel
+        do {
+            conn = try await bootstrap.connect(host: host, port: port).get()
+        } catch {
+            AppLogger.shared.log("[SSH 1/5] FALHOU TCP: \(error)", category: .network, level: .error)
+            throw error
+        }
         self.channel = conn
+        AppLogger.shared.log("[SSH 2/5] TCP conectado. Aguardando handshake SSH + autenticação...", category: .network, level: .info)
 
         let childChannel = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Channel, Error>) in
             let promise = conn.eventLoop.makePromise(of: Channel.self)
             promise.futureResult.whenComplete { result in
                 switch result {
-                case .success(let ch): continuation.resume(returning: ch)
-                case .failure(let err): continuation.resume(throwing: err)
+                case .success(let ch):
+                    AppLogger.shared.log("[SSH 4/5] Canal de sessão aberto.", category: .network, level: .info)
+                    continuation.resume(returning: ch)
+                case .failure(let err):
+                    AppLogger.shared.log("[SSH 4/5] FALHOU canal: \(err)", category: .network, level: .error)
+                    continuation.resume(throwing: err)
                 }
             }
             conn.pipeline.handler(type: NIOSSHHandler.self).whenComplete { result in
                 switch result {
                 case .failure(let err):
+                    AppLogger.shared.log("[SSH 3/5] FALHOU obter NIOSSHHandler: \(err)", category: .network, level: .error)
                     promise.fail(err)
                 case .success(let sshHandler):
+                    AppLogger.shared.log("[SSH 3/5] NIOSSHHandler pronto. Abrindo canal de sessão...", category: .network, level: .info)
+                    // Apenas adiciona o handler no initializer — NÃO envia eventos aqui.
+                    // O canal ainda não está ativo dentro do initializer; enviar eventos
+                    // causaria deadlock (future nunca completa).
                     sshHandler.createChannel(promise, channelType: .session) { childChannel, _ in
-                        childChannel.pipeline.addHandler(
+                        AppLogger.shared.log("[SSH 3.5] Configurando pipeline do canal...", category: .network, level: .info)
+                        return childChannel.pipeline.addHandler(
                             SSHInboundDataHandler(delegate: capturedDelegate)
-                        ).flatMap {
-                            let ptyRequest = SSHChannelRequestEvent.PseudoTerminalRequest(
-                                wantReply: false,
-                                term: "xterm-256color",
-                                terminalCharacterWidth: 80,
-                                terminalRowHeight: 24,
-                                terminalPixelWidth: 0,
-                                terminalPixelHeight: 0,
-                                terminalModes: SSHTerminalModes([:])
-                            )
-                            return childChannel.triggerUserOutboundEvent(ptyRequest).flatMap {
-                                childChannel.triggerUserOutboundEvent(
-                                    SSHChannelRequestEvent.ShellRequest(wantReply: false)
-                                )
-                            }
-                        }
+                        )
                     }
                 }
             }
         }
 
+        // Canal agora ativo — podemos enviar eventos SSH normalmente.
+        AppLogger.shared.log("[SSH 4.1] Canal ativo. Enviando PTY request...", category: .network, level: .info)
+        let ptyRequest = SSHChannelRequestEvent.PseudoTerminalRequest(
+            wantReply: true,
+            term: "xterm-256color",
+            terminalCharacterWidth: 80,
+            terminalRowHeight: 24,
+            terminalPixelWidth: 0,
+            terminalPixelHeight: 0,
+            terminalModes: SSHTerminalModes([:])
+        )
+        try await childChannel.triggerUserOutboundEvent(ptyRequest).get()
+
+        AppLogger.shared.log("[SSH 4.2] PTY OK. Enviando Shell request...", category: .network, level: .info)
+        try await childChannel.triggerUserOutboundEvent(
+            SSHChannelRequestEvent.ShellRequest(wantReply: true)
+        ).get()
+
         self.sshChildChannel = childChannel
-        AppLogger.shared.log("Shell SSH aberto com sucesso.", category: .network, level: .info)
+        AppLogger.shared.log("[SSH 5/5] Shell SSH aberto com sucesso!", category: .network, level: .info)
     }
 
     /// Envia um evento de resize de PTY para o servidor.

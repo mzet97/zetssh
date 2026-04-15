@@ -68,8 +68,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6A7ED2E52F8ED8F700A715B0 /* zetssh */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = zetssh;
 			sourceTree = "<group>";
 		};
@@ -806,7 +804,7 @@
 				4B2C8BDC178817097A6E3AE9 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6A7ED2DE2F8ED8F700A715B0 /* Build configuration list for PBXProject "zetssh" */ = {
 			isa = XCConfigurationList;
@@ -815,7 +813,7 @@
 				6A7ED2ED2F8ED8F800A715B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6A7ED2EE2F8ED8F800A715B0 /* Build configuration list for PBXNativeTarget "zetssh" */ = {
 			isa = XCConfigurationList;
@@ -824,7 +822,7 @@
 				6A7ED2F02F8ED8F800A715B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
