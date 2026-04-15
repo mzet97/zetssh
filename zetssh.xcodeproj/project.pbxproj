@@ -7,30 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = BE5C2E17EF0C69207E974734 /* GRDB */; };
-		23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */; };
-		43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F049F29C05AC9097D336FB /* ThemeRegistry.swift */; };
-		4733A959D75C365DE146F2F5 /* SFTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321EC6871CC4D5889F21688E /* SFTPClient.swift */; };
 		4D75E19017FE25FC3BB7A44B /* SessionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */; };
-		54726AAC7E82CABDBE62575E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0264FD721A3FCCFED9642C /* GRDB */; };
 		594851FE18058F2BA8CAE1A6 /* KnownHostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */; };
-		7621BF26447492D9FBEEA422 /* RemoteFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */; };
-		766B867FEDC4C13135B7A3D4 /* SSHConfigImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BEE185CAE502313A81E3B /* SSHConfigImportView.swift */; };
 		7A0921AD127B66BAF4AB3CF1 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1512EE4B7CA0DE3285A95FB1 /* Sparkle */; };
 		807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 55DF05A872FC3FA28C7CA55D /* SwiftTerm */; };
-		8BAE83143587DD50C534774F /* SSHConfigParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC8C0F6C723DB2E323F5232 /* SSHConfigParser.swift */; };
-		9D2BFEE89A850943373CBE5A /* SFTPEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF5275226569C250932480 /* SFTPEngine.swift */; };
-		A1D1B797FD641B0A6A373FB9 /* FileBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */; };
+		91AF026894FEBD253E437579 /* Pods_zetssh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40089B1319F26F033E409CD7 /* Pods_zetssh.framework */; };
+		97144F1C4961E0CA6548D6E5 /* Pods_ZetSSHTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F8EB0F49141BA54EF3AF96 /* Pods_ZetSSHTests.framework */; };
 		A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = B2A53C70A9566925E6BF53E1 /* NIOSSH */; };
-		B1A7A7F5523040232AF67639 /* SSHConfigImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B7D8C51FA1E8124FBF7504 /* SSHConfigImportViewModel.swift */; };
 		B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */; };
 		CCB4D82AC5B44585253893FD /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD76DD03AA4FE6338304350B /* SessionTests.swift */; };
-		CF5CF66597D70FF244FB0295 /* SSHConfigEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBF93550A203F8C18A0098B /* SSHConfigEntry.swift */; };
-		D6BEA258B44F9BD9E9440773 /* FileBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198435B576C7E0533FAA20DB /* FileBrowserView.swift */; };
 		DE9365284879C264C873513C /* KeychainServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */; };
 		E5BB7EF65963601D6267B6E9 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */; };
-		E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */; };
-		EB4B2FF1F9A4ECDE7528CB3A /* TerminalProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */; };
 		F919F46C43830FF6D60B3EEF /* SessionFormValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,27 +32,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		07DF5275226569C250932480 /* SFTPEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SFTPEngine.swift; path = zetssh/Data/Network/SFTPEngine.swift; sourceTree = "<group>"; };
-		198435B576C7E0533FAA20DB /* FileBrowserView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileBrowserView.swift; path = zetssh/Presentation/SFTP/FileBrowserView.swift; sourceTree = "<group>"; };
-		19F049F29C05AC9097D336FB /* ThemeRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ThemeRegistry.swift; path = zetssh/Data/Database/ThemeRegistry.swift; sourceTree = "<group>"; };
-		2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RemoteFileItem.swift; path = zetssh/Domain/Models/RemoteFileItem.swift; sourceTree = "<group>"; };
+		14DF215E28AEE880ECFD37C3 /* Pods-ZetSSHTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZetSSHTests.debug.xcconfig"; path = "Target Support Files/Pods-ZetSSHTests/Pods-ZetSSHTests.debug.xcconfig"; sourceTree = "<group>"; };
 		301DA1CE91F15D70E478937C /* PrimaryButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
-		321EC6871CC4D5889F21688E /* SFTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SFTPClient.swift; path = zetssh/Data/Network/SFTPClient.swift; sourceTree = "<group>"; };
+		40089B1319F26F033E409CD7 /* Pods_zetssh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_zetssh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		45EDFF89E1573A2E8A0614B0 /* Pods-ZetSSHTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZetSSHTests.release.xcconfig"; path = "Target Support Files/Pods-ZetSSHTests/Pods-ZetSSHTests.release.xcconfig"; sourceTree = "<group>"; };
+		4683707F47607980F5BB421D /* Pods-zetssh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zetssh.release.xcconfig"; path = "Target Support Files/Pods-zetssh/Pods-zetssh.release.xcconfig"; sourceTree = "<group>"; };
 		5F897C2E9BFE2397B759465B /* SessionRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
+		65F8EB0F49141BA54EF3AF96 /* Pods_ZetSSHTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZetSSHTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A11F4BF60933C52960E1907 /* zetsshApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = zetsshApp.swift; sourceTree = "<group>"; };
 		6A7ED2E32F8ED8F700A715B0 /* zetssh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zetssh.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FC8C0F6C723DB2E323F5232 /* SSHConfigParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SSHConfigParser.swift; path = zetssh/Data/SSH/SSHConfigParser.swift; sourceTree = "<group>"; };
 		74A5B905A8E3E5284D3ED137 /* SSHEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SSHEngine.swift; sourceTree = "<group>"; };
 		78509588C0AD416E8B868322 /* Folder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
-		7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalProfile.swift; path = zetssh/Domain/Models/TerminalProfile.swift; sourceTree = "<group>"; };
-		7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalSettingsView.swift; path = zetssh/Presentation/Settings/TerminalSettingsView.swift; sourceTree = "<group>"; };
-		816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalPreferencesViewModel.swift; path = zetssh/Presentation/Settings/TerminalPreferencesViewModel.swift; sourceTree = "<group>"; };
 		82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestDatabase.swift; sourceTree = "<group>"; };
-		85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileBrowserViewModel.swift; path = zetssh/Presentation/SFTP/FileBrowserViewModel.swift; sourceTree = "<group>"; };
 		975545BB9E607A5DF0C692B9 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "KeychainService+DBKey.swift"; sourceTree = "<group>"; };
 		9FD8311379EED2D3A42C1EAA /* TerminalView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
+		ACEF02362BE39C0D607404CB /* Pods-zetssh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zetssh.debug.xcconfig"; path = "Target Support Files/Pods-zetssh/Pods-zetssh.debug.xcconfig"; sourceTree = "<group>"; };
 		BA943AD09D0D7BE3E1B87004 /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		BD47466BC3B07E987E8C6122 /* AppConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionViewModelTests.swift; sourceTree = "<group>"; };
@@ -73,16 +56,13 @@
 		CFB6E36852D5A816877897CA /* AppDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
 		D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainServiceMock.swift; sourceTree = "<group>"; };
 		D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KnownHostTests.swift; sourceTree = "<group>"; };
-		D58BEE185CAE502313A81E3B /* SSHConfigImportView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SSHConfigImportView.swift; path = zetssh/Presentation/Import/SSHConfigImportView.swift; sourceTree = "<group>"; };
 		D5B57B62A908BAE6FD329531 /* AppLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		DF0287A69876A464DD4F08A9 /* SessionFormView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionFormView.swift; sourceTree = "<group>"; };
 		DFAB576156C4B6D5506716B4 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		E93C733E5582E79D2D51464D /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionFormValidationTests.swift; sourceTree = "<group>"; };
-		F8B7D8C51FA1E8124FBF7504 /* SSHConfigImportViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SSHConfigImportViewModel.swift; path = zetssh/Presentation/Import/SSHConfigImportViewModel.swift; sourceTree = "<group>"; };
 		FC441FC87B3F622F4500D40C /* SessionDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 		FD76DD03AA4FE6338304350B /* SessionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
-		FFBF93550A203F8C18A0098B /* SSHConfigEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SSHConfigEntry.swift; path = zetssh/Domain/Models/SSHConfigEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -102,8 +82,8 @@
 			files = (
 				807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */,
 				A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */,
-				54726AAC7E82CABDBE62575E /* GRDB in Frameworks */,
 				7A0921AD127B66BAF4AB3CF1 /* Sparkle in Frameworks */,
+				91AF026894FEBD253E437579 /* Pods_zetssh.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */,
-				0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */,
+				97144F1C4961E0CA6548D6E5 /* Pods_ZetSSHTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +137,18 @@
 			path = zetssh;
 			sourceTree = "<group>";
 		};
+		44299D56A033E1B93D1DE299 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				45EDFF89E1573A2E8A0614B0 /* Pods-ZetSSHTests.release.xcconfig */,
+				14DF215E28AEE880ECFD37C3 /* Pods-ZetSSHTests.debug.xcconfig */,
+				ACEF02362BE39C0D607404CB /* Pods-zetssh.debug.xcconfig */,
+				4683707F47607980F5BB421D /* Pods-zetssh.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		53BE096A20CFB97840F7EF19 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,19 +175,7 @@
 				3CF78113008E86D7B1166ECE /* zetssh */,
 				96C429BC517E608FC2F4330A /* Frameworks */,
 				D2A13CBA8669F6E1A806A837 /* ZetSSHTests */,
-				7E3A365DA1410EB37A3E5056 /* TerminalProfile.swift */,
-				19F049F29C05AC9097D336FB /* ThemeRegistry.swift */,
-				816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */,
-				7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */,
-				2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */,
-				07DF5275226569C250932480 /* SFTPEngine.swift */,
-				321EC6871CC4D5889F21688E /* SFTPClient.swift */,
-				85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */,
-				198435B576C7E0533FAA20DB /* FileBrowserView.swift */,
-				FFBF93550A203F8C18A0098B /* SSHConfigEntry.swift */,
-				6FC8C0F6C723DB2E323F5232 /* SSHConfigParser.swift */,
-				F8B7D8C51FA1E8124FBF7504 /* SSHConfigImportViewModel.swift */,
-				D58BEE185CAE502313A81E3B /* SSHConfigImportView.swift */,
+				44299D56A033E1B93D1DE299 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -255,6 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				E773711F79A1AA728A30B815 /* OS X */,
+				65F8EB0F49141BA54EF3AF96 /* Pods_ZetSSHTests.framework */,
+				40089B1319F26F033E409CD7 /* Pods_zetssh.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -347,9 +329,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 196D1C7F756F33D92EFFDAEB /* Build configuration list for PBXNativeTarget "ZetSSHTests" */;
 			buildPhases = (
+				91D257CEAAA59DA059602500 /* [CP] Check Pods Manifest.lock */,
 				30743474A2694797851D21A7 /* Sources */,
 				89BF59DB8FB4773544AE7F50 /* Frameworks */,
 				660F0251A3E14807C8FF3D56 /* Resources */,
+				D61042E1334E40E43173AD4E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -357,9 +341,6 @@
 				5B542420092498AE2BD39DA0 /* PBXTargetDependency */,
 			);
 			name = ZetSSHTests;
-			packageProductDependencies = (
-				BE5C2E17EF0C69207E974734 /* GRDB */,
-			);
 			productName = ZetSSHTests;
 			productReference = CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -368,9 +349,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A7ED2EE2F8ED8F800A715B0 /* Build configuration list for PBXNativeTarget "zetssh" */;
 			buildPhases = (
+				B779BBE9745D5419634766BF /* [CP] Check Pods Manifest.lock */,
 				6A7ED2DF2F8ED8F700A715B0 /* Sources */,
 				6A7ED2E02F8ED8F700A715B0 /* Frameworks */,
 				6A7ED2E12F8ED8F700A715B0 /* Resources */,
+				C103A4A0F4C73339E94B71AF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -383,7 +366,6 @@
 			packageProductDependencies = (
 				55DF05A872FC3FA28C7CA55D /* SwiftTerm */,
 				B2A53C70A9566925E6BF53E1 /* NIOSSH */,
-				6C0264FD721A3FCCFED9642C /* GRDB */,
 				1512EE4B7CA0DE3285A95FB1 /* Sparkle */,
 			);
 			productName = zetssh;
@@ -417,7 +399,6 @@
 			packageReferences = (
 				3F236E04C2B7E7DCD8185034 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */,
-				C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				6AB03CDD2F8F16F000A7C76F /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -448,6 +429,87 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		91D257CEAAA59DA059602500 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZetSSHTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B779BBE9745D5419634766BF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-zetssh-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C103A4A0F4C73339E94B71AF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-zetssh/Pods-zetssh-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-zetssh/Pods-zetssh-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-zetssh/Pods-zetssh-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D61042E1334E40E43173AD4E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZetSSHTests/Pods-ZetSSHTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZetSSHTests/Pods-ZetSSHTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZetSSHTests/Pods-ZetSSHTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		30743474A2694797851D21A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -466,19 +528,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB4B2FF1F9A4ECDE7528CB3A /* TerminalProfile.swift in Sources */,
-				43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */,
-				23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */,
-				E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */,
-				7621BF26447492D9FBEEA422 /* RemoteFileItem.swift in Sources */,
-				9D2BFEE89A850943373CBE5A /* SFTPEngine.swift in Sources */,
-				4733A959D75C365DE146F2F5 /* SFTPClient.swift in Sources */,
-				A1D1B797FD641B0A6A373FB9 /* FileBrowserViewModel.swift in Sources */,
-				D6BEA258B44F9BD9E9440773 /* FileBrowserView.swift in Sources */,
-				CF5CF66597D70FF244FB0295 /* SSHConfigEntry.swift in Sources */,
-				8BAE83143587DD50C534774F /* SSHConfigParser.swift in Sources */,
-				B1A7A7F5523040232AF67639 /* SSHConfigImportViewModel.swift in Sources */,
-				766B867FEDC4C13135B7A3D4 /* SSHConfigImportView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,9 +545,11 @@
 /* Begin XCBuildConfiguration section */
 		4B2C8BDC178817097A6E3AE9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14DF215E28AEE880ECFD37C3 /* Pods-ZetSSHTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -637,6 +688,7 @@
 		};
 		6A7ED2EF2F8ED8F800A715B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACEF02362BE39C0D607404CB /* Pods-zetssh.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -648,6 +700,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -671,6 +724,7 @@
 		};
 		6A7ED2F02F8ED8F800A715B0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4683707F47607980F5BB421D /* Pods-zetssh.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -682,6 +736,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -705,9 +760,11 @@
 		};
 		92E5581F045B73A0EE1ABE8B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 45EDFF89E1573A2E8A0614B0 /* Pods-ZetSSHTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -781,14 +838,6 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/groue/GRDB.swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.27.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -802,20 +851,10 @@
 			package = 3F236E04C2B7E7DCD8185034 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
 			productName = SwiftTerm;
 		};
-		6C0264FD721A3FCCFED9642C /* GRDB */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
-			productName = GRDB;
-		};
 		B2A53C70A9566925E6BF53E1 /* NIOSSH */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */;
 			productName = NIOSSH;
-		};
-		BE5C2E17EF0C69207E974734 /* GRDB */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
-			productName = GRDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

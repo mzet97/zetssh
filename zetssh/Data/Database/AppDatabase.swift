@@ -1,8 +1,3 @@
-// NOTE: GRDB uses SQLite. Swift Package Manager doesn't officially support SQLCipher drop-in natively without a fork like SQLCipher.swift.
-// For this MVP, we are simulating the db.usePassphrase by acknowledging the need.
-// In a full production build, we would use CocoaPods or a custom XCFrame to link SQLCipher instead of standard SQLite.
-// Since standard GRDB via SPM doesn't include SQLCipher, we'll keep the key generation but omit `usePassphrase` until the C-Library is swapped.
-
 import Foundation
 import AppKit
 import GRDB
@@ -47,13 +42,12 @@ final class AppDatabase {
         try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         let databaseURL = directoryURL.appendingPathComponent("db.sqlite")
 
-        let config = Configuration()
+        var config = Configuration()
 
-        // Generate/retrieve the 256-bit key from Keychain (used when SQLCipher is integrated).
-        _ = try KeychainService.shared.getOrCreateDatabaseEncryptionKey()
-
-        // To enable SQLCipher: link SQLCipher via CocoaPods/XCFramework, then uncomment:
-        // config.prepareDatabase { db in try db.usePassphrase(encryptionKey) }
+        let encryptionKey = try KeychainService.shared.getOrCreateDatabaseEncryptionKey()
+        config.prepareDatabase { db in
+            try db.usePassphrase(encryptionKey)
+        }
 
         dbWriter = try DatabasePool(path: databaseURL.path, configuration: config)
         try migrator.migrate(dbWriter)

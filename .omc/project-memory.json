@@ -83,6 +83,12 @@
       "type": "file"
     },
     {
+      "path": "zetssh.xcodeproj/project.pbxproj",
+      "accessCount": 16,
+      "lastAccessed": 1776215603262,
+      "type": "file"
+    },
+    {
       "path": "zetssh/Presentation/Sessions/SidebarView.swift",
       "accessCount": 12,
       "lastAccessed": 1776213251003,
@@ -95,22 +101,16 @@
       "type": "file"
     },
     {
+      "path": "zetssh/Data/Database/AppDatabase.swift",
+      "accessCount": 11,
+      "lastAccessed": 1776215419820,
+      "type": "file"
+    },
+    {
       "path": "zetssh/Presentation/Sessions/SessionViewModel.swift",
       "accessCount": 9,
       "lastAccessed": 1776211767025,
       "type": "directory"
-    },
-    {
-      "path": "zetssh.xcodeproj/project.pbxproj",
-      "accessCount": 9,
-      "lastAccessed": 1776212677076,
-      "type": "file"
-    },
-    {
-      "path": "zetssh/Data/Database/AppDatabase.swift",
-      "accessCount": 8,
-      "lastAccessed": 1776212839158,
-      "type": "file"
     },
     {
       "path": "zetssh/Data/Security/KeychainService.swift",
