@@ -4,7 +4,7 @@ import GRDB
 struct TerminalProfile: Identifiable, Codable, FetchableRecord, PersistableRecord {
     static var databaseTableName: String { "terminalProfile" }
 
-    var id: UUID
+    var id: String
     var name: String
     var foreground: String  // hex, e.g. "#F8F8F2"
     var background: String  // hex, e.g. "#282A36"
