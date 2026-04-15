@@ -7,10 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = BE5C2E17EF0C69207E974734 /* GRDB */; };
+		4D75E19017FE25FC3BB7A44B /* SessionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */; };
 		54726AAC7E82CABDBE62575E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0264FD721A3FCCFED9642C /* GRDB */; };
+		594851FE18058F2BA8CAE1A6 /* KnownHostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */; };
 		807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 55DF05A872FC3FA28C7CA55D /* SwiftTerm */; };
 		A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = B2A53C70A9566925E6BF53E1 /* NIOSSH */; };
 		B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */; };
+		CCB4D82AC5B44585253893FD /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD76DD03AA4FE6338304350B /* SessionTests.swift */; };
+		DE9365284879C264C873513C /* KeychainServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */; };
+		E5BB7EF65963601D6267B6E9 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */; };
+		F919F46C43830FF6D60B3EEF /* SessionFormValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,18 +38,24 @@
 		6A7ED2E32F8ED8F700A715B0 /* zetssh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zetssh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74A5B905A8E3E5284D3ED137 /* SSHEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SSHEngine.swift; sourceTree = "<group>"; };
 		78509588C0AD416E8B868322 /* Folder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestDatabase.swift; sourceTree = "<group>"; };
 		975545BB9E607A5DF0C692B9 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "KeychainService+DBKey.swift"; sourceTree = "<group>"; };
 		9FD8311379EED2D3A42C1EAA /* TerminalView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
 		BA943AD09D0D7BE3E1B87004 /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		BD47466BC3B07E987E8C6122 /* AppConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionViewModelTests.swift; sourceTree = "<group>"; };
 		CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZetSSHTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFB6E36852D5A816877897CA /* AppDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
+		D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainServiceMock.swift; sourceTree = "<group>"; };
+		D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KnownHostTests.swift; sourceTree = "<group>"; };
 		D5B57B62A908BAE6FD329531 /* AppLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		DF0287A69876A464DD4F08A9 /* SessionFormView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionFormView.swift; sourceTree = "<group>"; };
 		DFAB576156C4B6D5506716B4 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		E93C733E5582E79D2D51464D /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionFormValidationTests.swift; sourceTree = "<group>"; };
 		FC441FC87B3F622F4500D40C /* SessionDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
+		FD76DD03AA4FE6338304350B /* SessionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -71,6 +84,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */,
+				0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +94,8 @@
 		0E9523EBD3994988C861EFC2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FD76DD03AA4FE6338304350B /* SessionTests.swift */,
+				D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */,
 			);
 			name = Models;
 			path = Models;
@@ -97,6 +113,7 @@
 		26574885EC86860ABF964B95 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */,
 			);
 			name = ViewModels;
 			path = ViewModels;
@@ -155,6 +172,7 @@
 		799D704CDD40BD911B4BDBDB /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */,
 			);
 			name = Helpers;
 			path = Helpers;
@@ -190,6 +208,7 @@
 		9030C4D1150CB62D626D59E3 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */,
 			);
 			name = Mocks;
 			path = Mocks;
@@ -216,6 +235,7 @@
 		B176009F6D20D802564A341C /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				F0B5C8A21220921DB943DF4E /* SessionFormValidationTests.swift */,
 			);
 			name = Presentation;
 			path = Presentation;
@@ -302,6 +322,9 @@
 				5B542420092498AE2BD39DA0 /* PBXTargetDependency */,
 			);
 			name = ZetSSHTests;
+			packageProductDependencies = (
+				BE5C2E17EF0C69207E974734 /* GRDB */,
+			);
 			productName = ZetSSHTests;
 			productReference = CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -393,6 +416,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE9365284879C264C873513C /* KeychainServiceMock.swift in Sources */,
+				E5BB7EF65963601D6267B6E9 /* TestDatabase.swift in Sources */,
+				CCB4D82AC5B44585253893FD /* SessionTests.swift in Sources */,
+				594851FE18058F2BA8CAE1A6 /* KnownHostTests.swift in Sources */,
+				F919F46C43830FF6D60B3EEF /* SessionFormValidationTests.swift in Sources */,
+				4D75E19017FE25FC3BB7A44B /* SessionViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,13 +449,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zetssh.ZetSSHTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.9;
@@ -574,6 +605,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mzet97.zetssh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -607,6 +639,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mzet97.zetssh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -625,13 +658,15 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zetssh.ZetSSHTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.9;
@@ -713,6 +748,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */;
 			productName = NIOSSH;
+		};
+		BE5C2E17EF0C69207E974734 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
