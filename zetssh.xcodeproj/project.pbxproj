@@ -6,13 +6,50 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		54726AAC7E82CABDBE62575E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0264FD721A3FCCFED9642C /* GRDB */; };
+		807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 55DF05A872FC3FA28C7CA55D /* SwiftTerm */; };
+		A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = B2A53C70A9566925E6BF53E1 /* NIOSSH */; };
+		B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F04BA588073FFB303F200C79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A7ED2DB2F8ED8F700A715B0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A7ED2E22F8ED8F700A715B0;
+			remoteInfo = zetssh;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		301DA1CE91F15D70E478937C /* PrimaryButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		5F897C2E9BFE2397B759465B /* SessionRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
+		6A11F4BF60933C52960E1907 /* zetsshApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = zetsshApp.swift; sourceTree = "<group>"; };
 		6A7ED2E32F8ED8F700A715B0 /* zetssh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zetssh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		74A5B905A8E3E5284D3ED137 /* SSHEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SSHEngine.swift; sourceTree = "<group>"; };
+		78509588C0AD416E8B868322 /* Folder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		975545BB9E607A5DF0C692B9 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "KeychainService+DBKey.swift"; sourceTree = "<group>"; };
+		9FD8311379EED2D3A42C1EAA /* TerminalView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
+		BA943AD09D0D7BE3E1B87004 /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		BD47466BC3B07E987E8C6122 /* AppConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZetSSHTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFB6E36852D5A816877897CA /* AppDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
+		D5B57B62A908BAE6FD329531 /* AppLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		DF0287A69876A464DD4F08A9 /* SessionFormView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionFormView.swift; sourceTree = "<group>"; };
+		DFAB576156C4B6D5506716B4 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		E93C733E5582E79D2D51464D /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FC441FC87B3F622F4500D40C /* SessionDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6A7ED2E52F8ED8F700A715B0 /* zetssh */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = zetssh;
 			sourceTree = "<group>";
 		};
@@ -23,17 +60,86 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */,
+				A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */,
+				54726AAC7E82CABDBE62575E /* GRDB in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89BF59DB8FB4773544AE7F50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E9523EBD3994988C861EFC2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1F3F5A37DD2934B4DF03F5F6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				D5B57B62A908BAE6FD329531 /* AppLogger.swift */,
+				BD47466BC3B07E987E8C6122 /* AppConstants.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		26574885EC86860ABF964B95 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ViewModels;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3CF78113008E86D7B1166ECE /* zetssh */ = {
+			isa = PBXGroup;
+			children = (
+				861FAB629685BBC77482A13F /* App */,
+				C8A9110DEED268461C1371CA /* Domain */,
+				9B762B246C0DB8B478D0FB60 /* Data */,
+				8D6FC3276645D1CB80894E0E /* Presentation */,
+				1F3F5A37DD2934B4DF03F5F6 /* Core */,
+			);
+			path = zetssh;
+			sourceTree = "<group>";
+		};
+		53BE096A20CFB97840F7EF19 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				CFB6E36852D5A816877897CA /* AppDatabase.swift */,
+				5F897C2E9BFE2397B759465B /* SessionRepository.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		66562E8A98F32FDDCAEB6D1D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				78509588C0AD416E8B868322 /* Folder.swift */,
+				BA943AD09D0D7BE3E1B87004 /* Session.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		6A7ED2DA2F8ED8F700A715B0 = {
 			isa = PBXGroup;
 			children = (
 				6A7ED2E52F8ED8F700A715B0 /* zetssh */,
 				6A7ED2E42F8ED8F700A715B0 /* Products */,
+				3CF78113008E86D7B1166ECE /* zetssh */,
+				96C429BC517E608FC2F4330A /* Frameworks */,
+				D2A13CBA8669F6E1A806A837 /* ZetSSHTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -41,13 +147,165 @@
 			isa = PBXGroup;
 			children = (
 				6A7ED2E32F8ED8F700A715B0 /* zetssh.app */,
+				CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		799D704CDD40BD911B4BDBDB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Helpers;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		861FAB629685BBC77482A13F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6A11F4BF60933C52960E1907 /* zetsshApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8A9BE4EED7F1981F67862666 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				301DA1CE91F15D70E478937C /* PrimaryButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		8D6FC3276645D1CB80894E0E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E93C733E5582E79D2D51464D /* ContentView.swift */,
+				B40F0865640B33D5AA46F799 /* Sessions */,
+				F7D1E2507F180A26FBBCBDFC /* Terminal */,
+				8A9BE4EED7F1981F67862666 /* Components */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		9030C4D1150CB62D626D59E3 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Mocks;
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		96C429BC517E608FC2F4330A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E773711F79A1AA728A30B815 /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9B762B246C0DB8B478D0FB60 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				53BE096A20CFB97840F7EF19 /* Database */,
+				E4B530DA7383324481E8123E /* Security */,
+				DB17D40808BA1D63DAB235DE /* Network */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		B176009F6D20D802564A341C /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Presentation;
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		B40F0865640B33D5AA46F799 /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				DFAB576156C4B6D5506716B4 /* SidebarView.swift */,
+				FC441FC87B3F622F4500D40C /* SessionDetailView.swift */,
+				DF0287A69876A464DD4F08A9 /* SessionFormView.swift */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
+		C8A9110DEED268461C1371CA /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				66562E8A98F32FDDCAEB6D1D /* Models */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		D2A13CBA8669F6E1A806A837 /* ZetSSHTests */ = {
+			isa = PBXGroup;
+			children = (
+				9030C4D1150CB62D626D59E3 /* Mocks */,
+				799D704CDD40BD911B4BDBDB /* Helpers */,
+				0E9523EBD3994988C861EFC2 /* Models */,
+				B176009F6D20D802564A341C /* Presentation */,
+				26574885EC86860ABF964B95 /* ViewModels */,
+			);
+			name = ZetSSHTests;
+			path = ZetSSHTests;
+			sourceTree = "<group>";
+		};
+		DB17D40808BA1D63DAB235DE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				74A5B905A8E3E5284D3ED137 /* SSHEngine.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		E4B530DA7383324481E8123E /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				975545BB9E607A5DF0C692B9 /* KeychainService.swift */,
+				9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		E773711F79A1AA728A30B815 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		F7D1E2507F180A26FBBCBDFC /* Terminal */ = {
+			isa = PBXGroup;
+			children = (
+				9FD8311379EED2D3A42C1EAA /* TerminalView.swift */,
+			);
+			path = Terminal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2530DFE02DDA58C844DAFD2E /* ZetSSHTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 196D1C7F756F33D92EFFDAEB /* Build configuration list for PBXNativeTarget "ZetSSHTests" */;
+			buildPhases = (
+				30743474A2694797851D21A7 /* Sources */,
+				89BF59DB8FB4773544AE7F50 /* Frameworks */,
+				660F0251A3E14807C8FF3D56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B542420092498AE2BD39DA0 /* PBXTargetDependency */,
+			);
+			name = ZetSSHTests;
+			productName = ZetSSHTests;
+			productReference = CEA1C4B76DAB6F6C01628958 /* ZetSSHTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6A7ED2E22F8ED8F700A715B0 /* zetssh */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A7ED2EE2F8ED8F800A715B0 /* Build configuration list for PBXNativeTarget "zetssh" */;
@@ -65,6 +323,9 @@
 			);
 			name = zetssh;
 			packageProductDependencies = (
+				55DF05A872FC3FA28C7CA55D /* SwiftTerm */,
+				B2A53C70A9566925E6BF53E1 /* NIOSSH */,
+				6C0264FD721A3FCCFED9642C /* GRDB */,
 			);
 			productName = zetssh;
 			productReference = 6A7ED2E32F8ED8F700A715B0 /* zetssh.app */;
@@ -94,17 +355,30 @@
 			);
 			mainGroup = 6A7ED2DA2F8ED8F700A715B0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3F236E04C2B7E7DCD8185034 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
+				A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */,
+				C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6A7ED2E42F8ED8F700A715B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				6A7ED2E22F8ED8F700A715B0 /* zetssh */,
+				2530DFE02DDA58C844DAFD2E /* ZetSSHTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		660F0251A3E14807C8FF3D56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A7ED2E12F8ED8F700A715B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +389,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		30743474A2694797851D21A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A7ED2DF2F8ED8F700A715B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +405,35 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5B542420092498AE2BD39DA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = zetssh;
+			target = 6A7ED2E22F8ED8F700A715B0 /* zetssh */;
+			targetProxy = F04BA588073FFB303F200C79 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4B2C8BDC178817097A6E3AE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetssh.ZetSSHTests;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zetssh.app/Contents/MacOS/zetssh";
+			};
+			name = Debug;
+		};
 		6A7ED2EC2F8ED8F800A715B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -250,6 +559,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = zetssh/zetssh.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -282,6 +592,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = zetssh/zetssh.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -309,9 +620,37 @@
 			};
 			name = Release;
 		};
+		92E5581F045B73A0EE1ABE8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetssh.ZetSSHTests;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/zetssh.app/Contents/MacOS/zetssh";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		196D1C7F756F33D92EFFDAEB /* Build configuration list for PBXNativeTarget "ZetSSHTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92E5581F045B73A0EE1ABE8B /* Release */,
+				4B2C8BDC178817097A6E3AE9 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6A7ED2DE2F8ED8F700A715B0 /* Build configuration list for PBXProject "zetssh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -331,6 +670,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3F236E04C2B7E7DCD8185034 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio-ssh.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
+		C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.27.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		55DF05A872FC3FA28C7CA55D /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F236E04C2B7E7DCD8185034 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
+			productName = SwiftTerm;
+		};
+		6C0264FD721A3FCCFED9642C /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4E015F97648DB9B4F515303 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+		B2A53C70A9566925E6BF53E1 /* NIOSSH */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A00F5B58FAC6FAAE27F200E9 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */;
+			productName = NIOSSH;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6A7ED2DB2F8ED8F700A715B0 /* Project object */;
 }
