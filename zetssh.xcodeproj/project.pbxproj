@@ -10,13 +10,18 @@
 		0BBA8AB039E8747D7B32DD2B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = BE5C2E17EF0C69207E974734 /* GRDB */; };
 		23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */; };
 		43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F049F29C05AC9097D336FB /* ThemeRegistry.swift */; };
+		4733A959D75C365DE146F2F5 /* SFTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321EC6871CC4D5889F21688E /* SFTPClient.swift */; };
 		4D75E19017FE25FC3BB7A44B /* SessionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006A6AC4361A31DD6F05E7C /* SessionViewModelTests.swift */; };
 		54726AAC7E82CABDBE62575E /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0264FD721A3FCCFED9642C /* GRDB */; };
 		594851FE18058F2BA8CAE1A6 /* KnownHostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381BDEE8227C4506F3DD6C9 /* KnownHostTests.swift */; };
+		7621BF26447492D9FBEEA422 /* RemoteFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */; };
 		807575BA0771174E8A688CAF /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 55DF05A872FC3FA28C7CA55D /* SwiftTerm */; };
+		9D2BFEE89A850943373CBE5A /* SFTPEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF5275226569C250932480 /* SFTPEngine.swift */; };
+		A1D1B797FD641B0A6A373FB9 /* FileBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */; };
 		A7CFBB1962A10132117A0856 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = B2A53C70A9566925E6BF53E1 /* NIOSSH */; };
 		B8037C3C31167E6CA1A4FA24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */; };
 		CCB4D82AC5B44585253893FD /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD76DD03AA4FE6338304350B /* SessionTests.swift */; };
+		D6BEA258B44F9BD9E9440773 /* FileBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198435B576C7E0533FAA20DB /* FileBrowserView.swift */; };
 		DE9365284879C264C873513C /* KeychainServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECBD966DDFF89C8749C33E /* KeychainServiceMock.swift */; };
 		E5BB7EF65963601D6267B6E9 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */; };
 		E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */; };
@@ -35,8 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07DF5275226569C250932480 /* SFTPEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SFTPEngine.swift; path = zetssh/Data/Network/SFTPEngine.swift; sourceTree = "<group>"; };
+		198435B576C7E0533FAA20DB /* FileBrowserView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileBrowserView.swift; path = zetssh/Presentation/SFTP/FileBrowserView.swift; sourceTree = "<group>"; };
 		19F049F29C05AC9097D336FB /* ThemeRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ThemeRegistry.swift; path = zetssh/Data/Database/ThemeRegistry.swift; sourceTree = "<group>"; };
+		2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RemoteFileItem.swift; path = zetssh/Domain/Models/RemoteFileItem.swift; sourceTree = "<group>"; };
 		301DA1CE91F15D70E478937C /* PrimaryButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		321EC6871CC4D5889F21688E /* SFTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SFTPClient.swift; path = zetssh/Data/Network/SFTPClient.swift; sourceTree = "<group>"; };
 		42A92A4EFFB35DBE3F87AEF3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		5F897C2E9BFE2397B759465B /* SessionRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionRepository.swift; sourceTree = "<group>"; };
 		6A11F4BF60933C52960E1907 /* zetsshApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = zetsshApp.swift; sourceTree = "<group>"; };
@@ -47,6 +56,7 @@
 		7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalSettingsView.swift; path = zetssh/Presentation/Settings/TerminalSettingsView.swift; sourceTree = "<group>"; };
 		816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TerminalPreferencesViewModel.swift; path = zetssh/Presentation/Settings/TerminalPreferencesViewModel.swift; sourceTree = "<group>"; };
 		82C9AE777B6BADCE425DCFF2 /* TestDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestDatabase.swift; sourceTree = "<group>"; };
+		85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileBrowserViewModel.swift; path = zetssh/Presentation/SFTP/FileBrowserViewModel.swift; sourceTree = "<group>"; };
 		975545BB9E607A5DF0C692B9 /* KeychainService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		9B1C7E8A487BE9E4394F3EEC /* KeychainService+DBKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "KeychainService+DBKey.swift"; sourceTree = "<group>"; };
 		9FD8311379EED2D3A42C1EAA /* TerminalView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
@@ -169,6 +179,11 @@
 				19F049F29C05AC9097D336FB /* ThemeRegistry.swift */,
 				816FF6C8FA292A9F85F250A3 /* TerminalPreferencesViewModel.swift */,
 				7F171F43ACFC3C7F58D01223 /* TerminalSettingsView.swift */,
+				2A27C7B949AED0C7CDBFF075 /* RemoteFileItem.swift */,
+				07DF5275226569C250932480 /* SFTPEngine.swift */,
+				321EC6871CC4D5889F21688E /* SFTPClient.swift */,
+				85C5A75E6A2ECED8EFAA2D83 /* FileBrowserViewModel.swift */,
+				198435B576C7E0533FAA20DB /* FileBrowserView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -445,6 +460,11 @@
 				43EA15AE8BF68D6418208602 /* ThemeRegistry.swift in Sources */,
 				23BC3BCF83DE1DB685DC8083 /* TerminalPreferencesViewModel.swift in Sources */,
 				E783617687F1E096E83D2723 /* TerminalSettingsView.swift in Sources */,
+				7621BF26447492D9FBEEA422 /* RemoteFileItem.swift in Sources */,
+				9D2BFEE89A850943373CBE5A /* SFTPEngine.swift in Sources */,
+				4733A959D75C365DE146F2F5 /* SFTPClient.swift in Sources */,
+				A1D1B797FD641B0A6A373FB9 /* FileBrowserViewModel.swift in Sources */,
+				D6BEA258B44F9BD9E9440773 /* FileBrowserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

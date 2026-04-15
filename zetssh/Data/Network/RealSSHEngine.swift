@@ -504,6 +504,15 @@ public final class RealSSHEngine: SSHEngine {
             return NIOSSHPrivateKey(ed25519Key: ed25519)
         }
     }
+
+    /// Retorna o canal SSH principal para abertura de subsistemas (ex: SFTP).
+    /// Requer conexão ativa (authenticate() chamado com sucesso).
+    public func openSFTPChannel() async throws -> Channel {
+        guard let conn = channel, connectionState == .connected else {
+            throw SSHConnectionError.unknown
+        }
+        return conn
+    }
 }
 
 // MARK: - Private Delegates

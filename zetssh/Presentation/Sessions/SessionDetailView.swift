@@ -5,6 +5,7 @@ struct SessionDetailView: View {
 
     @State private var connectionStarted = false
     @State private var showingTerminalSettings = false
+    @State private var showingSFTP = false
 
     var body: some View {
         Group {
@@ -41,9 +42,23 @@ struct SessionDetailView: View {
                 }
                 .help("Configure terminal theme and font")
             }
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    showingSFTP = true
+                } label: {
+                    Label("SFTP", systemImage: "folder.badge.gearshape")
+                }
+                .help("Abrir File Browser SFTP")
+                .disabled(!connectionStarted)
+            }
         }
         .sheet(isPresented: $showingTerminalSettings) {
             TerminalSettingsView()
+        }
+        .sheet(isPresented: $showingSFTP) {
+            Text("SFTP Browser — requer integração NIO (próxima iteração)")
+                .padding()
+                .frame(minWidth: 460, minHeight: 400)
         }
     }
 
