@@ -6,70 +6,85 @@ struct TabBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 0) {
-                ForEach(Array(tabsVM.tabs.enumerated()), id: \.element.id) { index, tab in
-                    if index > 0 {
-                        Divider().frame(height: 20)
-                    }
+                ForEach(tabsVM.tabs) { tab in
                     tabButton(for: tab)
                 }
+
+                Button {} label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(KineticColors.outline)
+                        .frame(width: 28, height: 28)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.leading, 4)
+                .padding(.bottom, 4)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 34)
-        .background(Color(NSColor.windowBackgroundColor))
+        .frame(height: 40)
+        .padding(.horizontal, 8)
+        .background(KineticColors.surfaceDim)
         .overlay(alignment: .bottom) {
-            Divider()
+            GhostDivider()
         }
     }
 
-    // MARK: - Private
+    // MARK: - Tab Button
 
     @ViewBuilder
     private func tabButton(for tab: ActiveSession) -> some View {
         let isSelected = tabsVM.selectedTabId == tab.id
+        let isConnected = tab.connectionState == .connected
 
-        HStack(spacing: 4) {
+        HStack(spacing: 8) {
             Circle()
-                .fill(tab.connectionState == .connected ? Color.green :
-                      tab.connectionState == .connecting ? Color.yellow :
-                      tab.connectionState == .disconnected ? Color.red : Color.clear)
+                .fill(isSelected ? KineticColors.primary : KineticColors.outline)
                 .frame(width: 6, height: 6)
 
             Text(tab.label)
-                .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
+                .font(.system(size: 12, weight: isSelected ? .medium : .regular))
+                .foregroundStyle(isSelected ? KineticColors.onSurface : KineticColors.onSurfaceVariant)
                 .lineLimit(1)
                 .truncationMode(.tail)
                 .frame(maxWidth: 140, alignment: .leading)
+
+            Spacer(minLength: 0)
 
             Button {
                 tabsVM.close(tabId: tab.id)
             } label: {
                 Image(systemName: "xmark")
                     .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(KineticColors.outline)
                     .frame(width: 16, height: 16)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .help("Fechar aba")
+            .opacity(isSelected ? 1 : 0)
+            .help("Close tab")
         }
-        .padding(.horizontal, 10)
-        .frame(height: 34)
+        .padding(.horizontal, 12)
+        .frame(minWidth: 180)
+.frame(height: 40)
         .background(
-            isSelected
-                ? Color(NSColor.selectedContentBackgroundColor).opacity(0.15)
-                : Color.clear
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(isSelected ? KineticColors.surfaceContainer : .clear)
         )
-        .overlay(alignment: .bottom) {
-            if isSelected {
-                Rectangle()
-                    .frame(height: 2)
-                    .foregroundStyle(Color.accentColor)
-            }
-        }
+        .clipShape(
+            .rect(
+                topLeadingRadius: 8,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 8
+            )
+        )
         .contentShape(Rectangle())
         .onTapGesture {
             tabsVM.selectedTabId = tab.id
+        }
+        .onHover { _ in
         }
     }
 }

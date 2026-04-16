@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Command | Key Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffb595",
+                        "surface-container-low": "#1b1b1c",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "on-primary-fixed-variant": "#004493",
+                        "secondary-fixed-dim": "#c6c6cb",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "tertiary-fixed": "#ffdbcc",
+                        "surface-dim": "#131313",
+                        "surface-bright": "#393939",
+                        "background": "#131313",
+                        "on-tertiary-container": "#4c1a00",
+                        "secondary": "#c6c6cb",
+                        "on-tertiary-fixed": "#351000",
+                        "on-primary-fixed": "#001a41",
+                        "on-error": "#690005",
+                        "inverse-primary": "#005bc1",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-container": "#b8b8bd",
+                        "secondary-fixed": "#e3e2e7",
+                        "tertiary-container": "#ef6719",
+                        "on-surface": "#e5e2e1",
+                        "outline": "#8b90a0",
+                        "surface-container": "#202020",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-container": "#00285c",
+                        "on-tertiary": "#571e00",
+                        "on-secondary-fixed": "#1a1b1f",
+                        "secondary-container": "#48494d",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed-variant": "#46474b",
+                        "outline-variant": "#414755",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#adc6ff",
+                        "on-primary": "#002e69",
+                        "primary": "#adc6ff",
+                        "on-secondary": "#2f3034",
+                        "inverse-surface": "#e5e2e1",
+                        "on-surface-variant": "#c1c6d7",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#353535",
+                        "surface-variant": "#353535",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-container": "#4b8eff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"],
+                        "mono": ["SF Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .terminal-text { font-family: 'SF Mono', monospace; line-height: 1.6; }
+        .glass-panel {
+            background: rgba(53, 53, 53, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #adc6ff 0%, #4b8eff 100%);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #353535; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-stone-900/80 backdrop-blur-md w-full h-12 border-b-0 shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-base font-bold text-stone-100 Inter">Kinetic Command</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-stone-400 hover:text-stone-200 font-sans text-sm Inter transition-opacity" href="#">Terminals</a>
+<a class="text-blue-400 border-b-2 border-blue-400 pb-1 font-sans text-sm Inter" href="#">Keys</a>
+<a class="text-stone-400 hover:text-stone-200 font-sans text-sm Inter transition-opacity" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity cursor-pointer" data-icon="add">add</span>
+<span class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity cursor-pointer" data-icon="split_screen">splitscreen</span>
+<span class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity cursor-pointer" data-icon="info">info</span>
+</div>
+<button class="primary-gradient text-on-primary px-4 py-1 rounded-lg text-sm font-medium transition-transform active:scale-[0.98]">Connect</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="flex flex-col h-full p-4 h-screen w-64 border-r-0 bg-stone-900/70 backdrop-blur-xl shrink-0">
+<div class="mb-8 flex items-center gap-3 px-2">
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up studio portrait of a professional man with clean lighting and a neutral grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT_-aqp5Dkm3nSyv4C2qUWlff0SDoTmk5O2CpbO5-YaSMpE5tLtkfwmlrlf9TnummEBST76rl4FjlTJOWcZmoOjrH_t24Va6aeJr3e9-v7mQewFE7S5tx3pwNQrgrXp2EMxpsuXfQ-0F4CF8wm3Qgmd2uwafCe1Xvx2DQS7GxPq51PFbq1p4T1GbYG1FsK3hmwc48oVV-XfsSFwWmXDz0wYGVNiw5l690bm_CDLBycXmUgKjBe1jpiExjniiOVex-jL-6g1hhQUwg8"/>
+<div>
+<h2 class="text-stone-100 font-semibold text-sm">Digital Artisan</h2>
+<p class="text-stone-400 text-xs">Root Session</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 rounded-lg text-sm Inter" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dns">dns</span>
+<span>Hosts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 rounded-lg text-sm Inter" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="star">star</span>
+<span>Favorites</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 rounded-lg text-sm Inter" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="history">history</span>
+<span>History</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border border-outline-variant/20 text-stone-100 hover:bg-stone-800/50 transition-colors text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    New Session
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex overflow-hidden bg-surface">
+<!-- Key List Sidebar (MacBook Style) -->
+<div class="w-80 shrink-0 bg-surface-container-low flex flex-col">
+<div class="p-6 border-b border-transparent">
+<div class="flex items-center justify-between mb-4">
+<h1 class="text-xl font-bold text-on-surface">SSH Keys</h1>
+<div class="flex gap-1">
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-md transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="upload_file">upload_file</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-md transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-2 pl-9 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder:text-outline-variant" placeholder="Search keys..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-1">
+<!-- Key List Item Active -->
+<div class="p-3 bg-surface-container rounded-xl cursor-pointer">
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-semibold text-primary">id_ed25519_prod</span>
+<span class="text-[10px] uppercase font-bold text-outline-variant tracking-wider">Ed25519</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">SHA256:3u8j29...w0m2x</p>
+</div>
+<!-- Key List Item -->
+<div class="p-3 hover:bg-surface-container-high rounded-xl cursor-pointer transition-colors group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-on-surface">staging-web-1</span>
+<span class="text-[10px] uppercase font-bold text-outline-variant tracking-wider">RSA</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">SHA256:v8s1l2...p9z0q</p>
+</div>
+<!-- Key List Item -->
+<div class="p-3 hover:bg-surface-container-high rounded-xl cursor-pointer transition-colors group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-on-surface">ci-deployment</span>
+<span class="text-[10px] uppercase font-bold text-outline-variant tracking-wider">Ed25519</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">SHA256:r5t4y3...n2m1v</p>
+</div>
+<!-- Key List Item -->
+<div class="p-3 hover:bg-surface-container-high rounded-xl cursor-pointer transition-colors group">
+<div class="flex items-center justify-between mb-1">
+<span class="text-sm font-medium text-on-surface">legacy-db-access</span>
+<span class="text-[10px] uppercase font-bold text-outline-variant tracking-wider">RSA 4096</span>
+</div>
+<p class="text-xs text-on-surface-variant truncate">SHA256:a1s2d3...f4g5h</p>
+</div>
+</div>
+</div>
+<!-- Key Detail View -->
+<div class="flex-1 bg-surface-container flex flex-col relative">
+<!-- Detailed Info Header -->
+<div class="p-8 pb-4">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="key">key</span>
+<h2 class="text-2xl font-bold text-on-surface">id_ed25519_prod</h2>
+</div>
+<p class="text-on-surface-variant text-sm">Created on Oct 24, 2023 • Last used 2 hours ago</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-highest hover:bg-surface-bright rounded-lg text-sm transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+                                Copy Public Key
+                            </button>
+<button class="px-4 py-2 bg-error-container text-on-error-container hover:opacity-90 rounded-lg text-sm transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+                                Remove
+                            </button>
+</div>
+</div>
+</div>
+<!-- Bento Style Details Grid -->
+<div class="p-8 grid grid-cols-12 gap-6 flex-1 overflow-y-auto">
+<!-- Fingerprint Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low rounded-2xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
+<h3 class="text-xs font-bold text-outline uppercase tracking-widest mb-4">Fingerprint (SHA256)</h3>
+<div class="terminal-text text-lg text-primary-fixed-dim bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10">
+                            SHA256:3u8j29XkL8qP0z9V1w0m2x5n7B4v3c2C1q0w9e8r7t6
+                        </div>
+</div>
+<!-- Meta Data Grid -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<div class="bg-surface-container-low rounded-2xl p-6">
+<h3 class="text-xs font-bold text-outline uppercase tracking-widest mb-4">Key Type</h3>
+<p class="text-xl font-semibold text-on-surface">Ed25519</p>
+<p class="text-sm text-on-surface-variant mt-1">Modern Elliptic Curve</p>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6">
+<h3 class="text-xs font-bold text-outline uppercase tracking-widest mb-4">Size</h3>
+<p class="text-xl font-semibold text-on-surface">256 Bits</p>
+<p class="text-sm text-on-surface-variant mt-1">High Security Ratio</p>
+</div>
+</div>
+<!-- Preview Container -->
+<div class="col-span-12 bg-surface-container-low rounded-2xl p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs font-bold text-outline uppercase tracking-widest">Public Key Content</h3>
+<span class="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full uppercase font-bold">Authorized</span>
+</div>
+<div class="terminal-text text-sm text-on-surface-variant bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 break-all select-all">
+                            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOm6y8pU2XG3X1e9e8f7g6h5j4k3l2m1n0b9v8c7x6z5 user@kinetic-workstation-macos
+                        </div>
+</div>
+<!-- Usage Stats -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-6 border border-outline-variant/10 rounded-2xl">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="dns">dns</span>
+<span class="text-sm font-medium text-on-surface-variant">Associated Hosts</span>
+</div>
+<span class="text-2xl font-bold">14 Servers</span>
+</div>
+<div class="p-6 border border-outline-variant/10 rounded-2xl">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+<span class="text-sm font-medium text-on-surface-variant">Expiry</span>
+</div>
+<span class="text-2xl font-bold">Never</span>
+</div>
+<div class="p-6 border border-outline-variant/10 rounded-2xl">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="lock_open">lock_open</span>
+<span class="text-sm font-medium text-on-surface-variant">Passphrase</span>
+</div>
+<span class="text-2xl font-bold">Encrypted</span>
+</div>
+</div>
+</div>
+<!-- FAB - Contextual Key Actions -->
+<div class="absolute bottom-8 right-8 flex gap-3">
+<button class="bg-surface-container-highest text-on-surface flex items-center gap-2 px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-transform font-medium border border-outline-variant/20">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                        Import from File
+                    </button>
+<button class="primary-gradient text-on-primary flex items-center gap-2 px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-transform font-medium">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        Add Key
+                    </button>
+</div>
+</div>
+</main>
+</div>
+<!-- Hidden overlay for "Add Key" Modal (Visual Mockup Only) -->
+<div class="fixed inset-0 bg-background/60 backdrop-blur-sm z-[100] flex items-center justify-center p-6 hidden">
+<div class="glass-panel max-w-xl w-full rounded-3xl p-8 border border-outline-variant/20 shadow-2xl">
+<h2 class="text-2xl font-bold mb-6">Generate New Key Pair</h2>
+<div class="space-y-6">
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-2">Key Name</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 focus:ring-1 focus:ring-primary" placeholder="e.g. macbook-pro-2024" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-outline uppercase mb-2">Algorithm</label>
+<div class="grid grid-cols-2 gap-3">
+<div class="p-4 bg-surface-container border-2 border-primary rounded-2xl cursor-pointer">
+<p class="font-bold">Ed25519</p>
+<p class="text-xs text-on-surface-variant">Modern, fast, secure</p>
+</div>
+<div class="p-4 bg-surface-container-low border-2 border-transparent rounded-2xl cursor-pointer hover:bg-surface-container">
+<p class="font-bold">RSA 4096</p>
+<p class="text-xs text-on-surface-variant">Legacy compatibility</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-10 flex justify-end gap-4">
+<button class="text-on-surface-variant hover:text-on-surface font-medium">Cancel</button>
+<button class="primary-gradient text-on-primary px-8 py-3 rounded-xl font-bold shadow-lg">Generate Pair</button>
+</div>
+</div>
+</div>
+</body></html>

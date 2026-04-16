@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Command | Session History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffb595",
+                    "surface-container-low": "#1b1b1c",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed-variant": "#7c2e00",
+                    "on-primary-fixed-variant": "#004493",
+                    "secondary-fixed-dim": "#c6c6cb",
+                    "tertiary-fixed-dim": "#ffb595",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-dim": "#131313",
+                    "surface-bright": "#393939",
+                    "background": "#131313",
+                    "on-tertiary-container": "#4c1a00",
+                    "secondary": "#c6c6cb",
+                    "on-tertiary-fixed": "#351000",
+                    "on-primary-fixed": "#001a41",
+                    "on-error": "#690005",
+                    "inverse-primary": "#005bc1",
+                    "inverse-on-surface": "#303030",
+                    "on-secondary-container": "#b8b8bd",
+                    "secondary-fixed": "#e3e2e7",
+                    "tertiary-container": "#ef6719",
+                    "on-surface": "#e5e2e1",
+                    "outline": "#8b90a0",
+                    "surface-container": "#202020",
+                    "on-background": "#e5e2e1",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-container": "#00285c",
+                    "on-tertiary": "#571e00",
+                    "on-secondary-fixed": "#1a1b1f",
+                    "secondary-container": "#48494d",
+                    "primary-fixed": "#d8e2ff",
+                    "on-secondary-fixed-variant": "#46474b",
+                    "outline-variant": "#414755",
+                    "primary-fixed-dim": "#adc6ff",
+                    "surface": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "surface-tint": "#adc6ff",
+                    "on-primary": "#002e69",
+                    "primary": "#adc6ff",
+                    "on-secondary": "#2f3034",
+                    "inverse-surface": "#e5e2e1",
+                    "on-surface-variant": "#c1c6d7",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#353535",
+                    "surface-variant": "#353535",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-container": "#4b8eff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .mono { font-family: 'SF Mono', 'Fira Code', monospace; }
+        .glass-panel {
+            background: rgba(53, 53, 53, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary/30 h-screen overflow-hidden flex flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-stone-900/80 backdrop-blur-md h-12 shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-base font-bold text-stone-100">Kinetic Command</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Terminals</a>
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Keys</a>
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container-highest/50 px-3 py-1 rounded-lg">
+<span class="material-symbols-outlined text-stone-400 text-[18px]" data-icon="search">search</span>
+<input class="bg-transparent border-none text-xs focus:ring-0 text-on-surface placeholder:text-stone-500 w-48" placeholder="Search sessions..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-stone-400 hover:text-stone-100 transition-opacity p-1">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="text-stone-400 hover:text-stone-100 transition-opacity p-1">
+<span class="material-symbols-outlined" data-icon="split_screen">splitscreen</span>
+</button>
+<button class="text-stone-400 hover:text-stone-100 transition-opacity p-1">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</button>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary text-xs font-bold px-4 py-1.5 rounded-xl hover:opacity-90 active:scale-[0.98] transition-transform">
+                Connect
+            </button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="flex flex-col h-full p-4 h-screen w-64 bg-stone-900/70 backdrop-blur-xl border-r-0">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-xl overflow-hidden bg-surface-container-high flex items-center justify-center">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a digital designer with short dark hair in a minimalist grey studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSobnhzvUAvm2ZlwI4RGHPOSN7KmTbgWJsR7K05-nT7QIXrqDkli93gtOdBV1cfcskIYuKRaa86XG9Ni7R7Fp3MwgL0JfBX0Q8sKWA5aI22aNfdtCrP93_V1F1ayqFkpg0wt5yMap6-wsSPoJmp89mqmTkoTDAuYQRWG5BpcCCfau7TQr8B3ePs_Okz0Ays0ooAFpHh_f80JhgJN438W0NLYVJ76c1AxsydtHPlhfEk_A-eJlyBgniS0ZLQYCll3wMsqKHHYxLJ8IE"/>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-stone-100">Digital Artisan</h3>
+<p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Pro Account</p>
+</div>
+</div>
+<nav class="space-y-1 flex-1">
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dns">dns</span>
+<span class="text-sm font-sans tracking-tight Inter">Hosts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="star">star</span>
+<span class="text-sm font-sans tracking-tight Inter">Favorites</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-stone-800/50 text-blue-400 font-medium rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+<span class="text-sm font-sans tracking-tight Inter">History</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full py-2.5 rounded-xl bg-surface-container-high/50 text-stone-200 text-xs font-semibold hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+                    New Session
+                </button>
+</div>
+</aside>
+<!-- Main Content Area (MacOS Finder Style List) -->
+<main class="flex-1 flex flex-col bg-surface min-w-0">
+<!-- Header/Breadcrumbs -->
+<div class="h-14 flex items-center px-8 border-b border-white/5 justify-between bg-surface-dim">
+<div class="flex items-center gap-4">
+<h1 class="text-lg font-bold text-on-surface">Session History</h1>
+<div class="flex items-center gap-1 text-[11px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]" data-icon="filter_list">filter_list</span>
+                        All Connections
+                    </div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex bg-surface-container-low p-1 rounded-lg">
+<button class="p-1.5 bg-surface-container-high rounded text-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="format_list_bulleted">format_list_bulleted</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- List View Wrapper -->
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-separate border-spacing-0">
+<thead class="sticky top-0 bg-surface-dim/95 backdrop-blur-sm z-10">
+<tr class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+<th class="px-8 py-3 font-semibold border-b border-white/5">Host name</th>
+<th class="px-4 py-3 font-semibold border-b border-white/5">Address</th>
+<th class="px-4 py-3 font-semibold border-b border-white/5">Date/Time</th>
+<th class="px-4 py-3 font-semibold border-b border-white/5">Duration</th>
+<th class="px-8 py-3 font-semibold border-b border-white/5 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/[0.03]">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-default">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="terminal">terminal</span>
+</div>
+<span class="text-sm font-medium text-on-surface">production-db-01</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="mono text-xs text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">192.168.1.105</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm text-on-surface">Oct 24, 2023</span>
+<span class="text-[11px] text-on-surface-variant">14:20:45</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-on-surface-variant">02:45:12</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+                                        View Logs
+                                    </button>
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                                        Reconnect
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-default">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-icon="cloud">cloud</span>
+</div>
+<span class="text-sm font-medium text-on-surface">aws-lambda-gateway</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="mono text-xs text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">34.212.11.89</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm text-on-surface">Oct 23, 2023</span>
+<span class="text-[11px] text-on-surface-variant">09:12:33</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-on-surface-variant">00:15:05</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+                                        View Logs
+                                    </button>
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                                        Reconnect
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-default">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-[20px]" data-icon="storage">storage</span>
+</div>
+<span class="text-sm font-medium text-on-surface">local-dev-instance</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="mono text-xs text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">127.0.0.1</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm text-on-surface">Oct 22, 2023</span>
+<span class="text-[11px] text-on-surface-variant">22:05:10</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-on-surface-variant">08:22:19</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+                                        View Logs
+                                    </button>
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                                        Reconnect
+                                    </button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-default">
+<td class="px-8 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="dns">dns</span>
+</div>
+<span class="text-sm font-medium text-on-surface">staging-web-front-02</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="mono text-xs text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">10.0.4.52</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm text-on-surface">Oct 22, 2023</span>
+<span class="text-[11px] text-on-surface-variant">18:30:00</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-on-surface-variant">01:10:44</span>
+</td>
+<td class="px-8 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+                                        View Logs
+                                    </button>
+<button class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                                        Reconnect
+                                    </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer Meta Info -->
+<div class="h-10 bg-surface-container-low flex items-center px-8 border-t border-white/5 text-[11px] text-on-surface-variant font-medium">
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                        4 Sessions active
+                    </span>
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-stone-500"></span>
+                        142 Total historical entries
+                    </span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="hard_drive">hard_drive</span>
+                        4.2 GB logs recorded
+                    </span>
+</div>
+<div class="ml-auto flex items-center gap-4">
+<button class="hover:text-primary transition-colors">Download History CSV</button>
+<button class="hover:text-error transition-colors">Clear History</button>
+</div>
+</div>
+</main>
+<!-- Context Info Rail (Asymmetric Design) -->
+<aside class="hidden lg:flex w-72 flex-col border-l border-white/5 bg-surface-container-low p-6 gap-8">
+<div>
+<h4 class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Analytics overview</h4>
+<div class="space-y-4">
+<div class="bg-surface-container p-4 rounded-xl border border-white/[0.03]">
+<p class="text-[11px] text-on-surface-variant mb-1">Most Frequent Host</p>
+<p class="text-base font-bold text-on-surface">production-db-01</p>
+<div class="mt-3 w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%] rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-xl border border-white/[0.03]">
+<p class="text-[11px] text-on-surface-variant mb-1">Total Uptime</p>
+<p class="text-base font-bold text-on-surface">428h 12m</p>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Visual Activity</h4>
+<div class="w-full aspect-square rounded-2xl overflow-hidden bg-surface-container-highest relative group">
+<img alt="Network traffic visualization" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" data-alt="abstract digital visualization of network traffic with flowing lines of blue and cyan light on a deep obsidian background high contrast futuristic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPn_RJCpThBuLp9iAjqYek301dLkivShmZ1czV7-vojTsrpmjWYPs4gGMfqTH_7Nm0dHyEGl6JFEJCVJXVg_DTJLPcwODmMm6y3NKVXrED9pVtUmCBYeWDF9oUxAi9nNRAKhGI3dL97lr-t0vRmO7bGqy1d3Kg-IlhpLEA8hHDg0DeuX1a5BbGPuvfVAGm-bcuJDeQx-2okMCSvzteH72UWznYdv1It1n_8o-YJQ0viVlVJnKcj9W7ww_7mv862XO8IPBGxOUyM9S2"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<p class="text-[10px] font-medium text-blue-400">Live Traffic Pulse</p>
+<p class="text-[13px] text-on-surface leading-tight">System metrics nominal across 12 zones.</p>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="glass-panel p-4 rounded-xl border border-white/10">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="text-xs font-bold">End-to-End Encrypted</span>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">All history and connection logs are locally encrypted with AES-256. No data ever leaves your device.</p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Mobile Bottom NavBar (Hidden on Web) -->
+<footer class="md:hidden flex items-center justify-around bg-stone-900/80 backdrop-blur-md h-16 border-t border-white/5 sticky bottom-0">
+<a class="flex flex-col items-center gap-1 text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="dns">dns</span>
+<span class="text-[10px]">Hosts</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+<span class="text-[10px]">Favs</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-blue-400" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="text-[10px]">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px]">Settings</span>
+</a>
+</footer>
+</body></html>

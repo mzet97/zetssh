@@ -1,4 +1,5 @@
 import Foundation
+import Cocoa
 import NIOCore
 import NIOPosix
 @preconcurrency import NIOSSH
@@ -35,6 +36,9 @@ public final class RealSSHEngine: SSHEngine {
 
     public weak var delegate: SSHClientDelegate?
 
+    private var storedKeepaliveHandler: SSHKeepaliveHandler?
+    private var lifecycleObservers: [NSObjectProtocol] = []
+
     public var isConnected: Bool { connectionState == .connected }
     public var isConnecting: Bool { connectionState == .connecting }
 
@@ -64,6 +68,7 @@ public final class RealSSHEngine: SSHEngine {
         do {
             try await establishConnection(authDelegate: authDelegate)
             connectionState = .connected
+            setupLifecycleObservers()
             await emitHostKeyWarningIfNeeded()
         } catch {
             connectionState = .idle
@@ -111,6 +116,7 @@ public final class RealSSHEngine: SSHEngine {
         do {
             try await establishConnection(authDelegate: authDelegate)
             connectionState = .connected
+            setupLifecycleObservers()
             await emitHostKeyWarningIfNeeded()
         } catch {
             connectionState = .idle
@@ -121,6 +127,8 @@ public final class RealSSHEngine: SSHEngine {
     public func disconnect() {
         guard connectionState == .connected || connectionState == .connecting else { return }
         connectionState = .disconnecting
+        removeLifecycleObservers()
+        storedKeepaliveHandler = nil
         AppLogger.shared.log("Desconectando SSH...", category: .network, level: .info)
         _ = sshChildChannel?.close()
         _ = channel?.close()
@@ -132,6 +140,85 @@ public final class RealSSHEngine: SSHEngine {
                 AppLogger.shared.log("EventLoopGroup encerrado.", category: .network, level: .info)
             }
         }
+    }
+
+    // MARK: - macOS Lifecycle
+
+    func handleAppSuspended() {
+        storedKeepaliveHandler?.suspend()
+        AppLogger.shared.log("[SSH] App suspenso — keepalive pausado.", category: .network, level: .info)
+    }
+
+    func handleAppResumed() {
+        storedKeepaliveHandler?.resume()
+        AppLogger.shared.log("[SSH] App retomado — keepalive reativado, verificando saúde.", category: .network, level: .info)
+
+        if let child = sshChildChannel, !child.isActive {
+            AppLogger.shared.log(
+                "[SSH] Canal inativo após retomada — notificando desconexão.",
+                category: .network, level: .warning
+            )
+            DispatchQueue.main.async { [weak self] in
+                self?.delegate?.onDisconnected()
+            }
+        }
+    }
+
+    private func setupLifecycleObservers() {
+        removeLifecycleObservers()
+        let wsnc = NSWorkspace.shared.notificationCenter
+
+        let sleepObserver = wsnc.addObserver(
+            forName: NSWorkspace.willSleepNotification,
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppSuspended() }
+
+        let screenSleepObserver = wsnc.addObserver(
+            forName: NSWorkspace.screensDidSleepNotification,
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppSuspended() }
+
+        let wakeObserver = wsnc.addObserver(
+            forName: NSWorkspace.didWakeNotification,
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppResumed() }
+
+        let screenWakeObserver = wsnc.addObserver(
+            forName: NSWorkspace.screensDidWakeNotification,
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppResumed() }
+
+        let dnc = DistributedNotificationCenter.default()
+        let screenLockObserver = dnc.addObserver(
+            forName: Notification.Name("com.apple.screenIsLocked"),
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppSuspended() }
+
+        let screenUnlockObserver = dnc.addObserver(
+            forName: Notification.Name("com.apple.screenIsUnlocked"),
+            object: nil as Any?,
+            queue: OperationQueue.main
+        ) { [weak self] (_: Notification) in self?.handleAppResumed() }
+
+        lifecycleObservers = [
+            sleepObserver, screenSleepObserver, wakeObserver,
+            screenWakeObserver, screenLockObserver, screenUnlockObserver
+        ]
+    }
+
+    private func removeLifecycleObservers() {
+        let wsnc = NSWorkspace.shared.notificationCenter
+        let dnc = DistributedNotificationCenter.default()
+        for observer in lifecycleObservers {
+            wsnc.removeObserver(observer)
+            dnc.removeObserver(observer)
+        }
+        lifecycleObservers = []
     }
 
     // MARK: - Helpers
@@ -206,12 +293,16 @@ public final class RealSSHEngine: SSHEngine {
                     // causaria deadlock (future nunca completa).
                     sshHandler.createChannel(promise, channelType: .session) { childChannel, _ in
                         AppLogger.shared.log("[SSH 3.5] Configurando pipeline do canal...", category: .network, level: .info)
+                        let keepalive = SSHKeepaliveHandler(
+                            interval: .seconds(AppConstants.Keepalive.intervalSeconds),
+                            maxMissed: AppConstants.Keepalive.maxMissed,
+                            delegate: capturedDelegate
+                        )
+                        promise.futureResult.eventLoop.execute {
+                            self.storedKeepaliveHandler = keepalive
+                        }
                         return childChannel.pipeline.addHandlers([
-                            SSHKeepaliveHandler(
-                                interval: .seconds(60),
-                                maxMissed: 3,
-                                delegate: capturedDelegate
-                            ),
+                            keepalive,
                             SSHInboundDataHandler(delegate: capturedDelegate)
                         ])
                     }
@@ -262,7 +353,7 @@ public final class RealSSHEngine: SSHEngine {
     }
 
     deinit {
-        // group já é encerrado em disconnect(); o OS recicla os threads se deinit ocorrer antes
+        removeLifecycleObservers()
     }
 
     // MARK: - Private Key Loading
@@ -679,9 +770,6 @@ private final class HostKeyVerificationDelegate: NIOSSHClientServerAuthenticatio
 
 // MARK: - SSHKeepaliveHandler
 
-/// Detecta conexões SSH mortas por inatividade.
-/// Se nenhum dado for recebido em `interval * maxMissed` segundos, encerra o canal
-/// e notifica o delegate com `connectionTimedOut`.
 private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Sendable {
     typealias InboundIn = SSHChannelData
     typealias InboundOut = SSHChannelData
@@ -690,7 +778,9 @@ private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Senda
     private let maxMissed: Int
     private weak var delegate: (any SSHClientDelegate)?
 
-    private var missedIntervals = 0
+    private let lock = NSLock()
+    private var _missedIntervals = 0
+    private var _suspended = false
     private var keepaliveTask: RepeatedTask?
 
     init(interval: TimeAmount, maxMissed: Int, delegate: (any SSHClientDelegate)?) {
@@ -707,8 +797,14 @@ private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Senda
             notifying: nil
         ) { [weak self] task in
             guard let self else { task.cancel(); return }
-            self.missedIntervals += 1
-            if self.missedIntervals >= self.maxMissed {
+            guard !self.lock.withLock({ self._suspended }) else { return }
+
+            let missed = self.lock.withLock { () -> Int in
+                self._missedIntervals += 1
+                return self._missedIntervals
+            }
+
+            if missed >= self.maxMissed {
                 task.cancel()
                 AppLogger.shared.log(
                     "[SSH Keepalive] Sem resposta após \(self.maxMissed) intervalos. Encerrando.",
@@ -729,7 +825,7 @@ private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Senda
     }
 
     func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        missedIntervals = 0
+        lock.withLock { _missedIntervals = 0 }
         context.fireChannelRead(data)
     }
 
@@ -737,6 +833,20 @@ private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Senda
         keepaliveTask?.cancel()
         keepaliveTask = nil
         context.fireErrorCaught(error)
+    }
+
+    func suspend() {
+        lock.withLock {
+            _suspended = true
+            _missedIntervals = 0
+        }
+    }
+
+    func resume() {
+        lock.withLock {
+            _suspended = false
+            _missedIntervals = 0
+        }
     }
 }
 

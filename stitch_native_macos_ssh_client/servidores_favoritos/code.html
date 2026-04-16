@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic Command | Favorites</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffb595",
+                    "surface-container-low": "#1b1b1c",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed-variant": "#7c2e00",
+                    "on-primary-fixed-variant": "#004493",
+                    "secondary-fixed-dim": "#c6c6cb",
+                    "tertiary-fixed-dim": "#ffb595",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-dim": "#131313",
+                    "surface-bright": "#393939",
+                    "background": "#131313",
+                    "on-tertiary-container": "#4c1a00",
+                    "secondary": "#c6c6cb",
+                    "on-tertiary-fixed": "#351000",
+                    "on-primary-fixed": "#001a41",
+                    "on-error": "#690005",
+                    "inverse-primary": "#005bc1",
+                    "inverse-on-surface": "#303030",
+                    "on-secondary-container": "#b8b8bd",
+                    "secondary-fixed": "#e3e2e7",
+                    "tertiary-container": "#ef6719",
+                    "on-surface": "#e5e2e1",
+                    "outline": "#8b90a0",
+                    "surface-container": "#202020",
+                    "on-background": "#e5e2e1",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-container": "#00285c",
+                    "on-tertiary": "#571e00",
+                    "on-secondary-fixed": "#1a1b1f",
+                    "secondary-container": "#48494d",
+                    "primary-fixed": "#d8e2ff",
+                    "on-secondary-fixed-variant": "#46474b",
+                    "outline-variant": "#414755",
+                    "primary-fixed-dim": "#adc6ff",
+                    "surface": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "surface-tint": "#adc6ff",
+                    "on-primary": "#002e69",
+                    "primary": "#adc6ff",
+                    "on-secondary": "#2f3034",
+                    "inverse-surface": "#e5e2e1",
+                    "on-surface-variant": "#c1c6d7",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#353535",
+                    "surface-variant": "#353535",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-container": "#4b8eff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "sans": ["Inter", "sans-serif"],
+                    "mono": ["JetBrains Mono", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 53, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #adc6ff 0%, #4b8eff 100%);
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="flex flex-col h-full p-4 h-screen w-64 border-r-0 bg-stone-900/70 backdrop-blur-xl shrink-0">
+<div class="mb-8 px-2">
+<h1 class="text-lg font-semibold text-stone-100 tracking-tight">Kinetic Command</h1>
+<p class="text-xs text-stone-400 font-sans tracking-tight Inter">Digital Artisan</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 group active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dns">dns</span>
+<span class="font-sans text-sm tracking-tight Inter">Hosts</span>
+</a>
+<!-- Active State Logic: Favorites is active -->
+<a class="flex items-center gap-3 px-3 py-2 bg-stone-800/50 text-blue-400 font-medium rounded-lg group active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-sans text-sm tracking-tight Inter">Favorites</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/30 transition-colors duration-200 group active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="history">history</span>
+<span class="font-sans text-sm tracking-tight Inter">History</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 space-y-4">
+<button class="w-full flex items-center justify-center gap-2 primary-gradient text-on-primary font-medium py-2 rounded-lg text-sm shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Session
+            </button>
+<div class="flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a creative individual with soft studio lighting and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHxN57XrU0LQusWsl0t7w6jbmxNBBWVhkC1gaNZj-ofUbo89Gg8ZdGJb04jAIYnmKZhco2iNzGYK0hK7mMNy6bjgP2Zobc2m6qfgIvEeisqZX3olYorDc-rwxAKpimDUW3chi7yNBQMC3dwnW3bgGvq8vjiv7QyH1NxW-f4tbIAoKeFltRIBJWVhzWaZ2uTr-2H9XHcNUW3Cg7cPb997QESwHjHqWTmsBAHe-UUEPwRQ6xXRPxXPNRpQFprCt9RJ3Zyo6XWbVJvSjJ"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-stone-100">User profile</span>
+<span class="text-[10px] text-stone-500 uppercase tracking-widest">PRO PLAN</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between px-6 w-full sticky top-0 z-40 bg-stone-900/80 backdrop-blur-md w-full h-12 border-b-0 shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-base font-bold text-stone-100 font-sans Inter">Kinetic Command</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Terminals</a>
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Keys</a>
+<a class="text-stone-400 hover:text-stone-200 text-sm font-sans Inter transition-opacity" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-highest/50 border-none rounded-full py-1 pl-9 pr-4 text-xs focus:ring-1 focus:ring-primary w-48 transition-all duration-300" placeholder="Search keys..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity" data-icon="add">add</button>
+<button class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity" data-icon="split_screen">split_screen</button>
+<button class="material-symbols-outlined text-stone-400 hover:text-stone-100 transition-opacity" data-icon="info">info</button>
+</div>
+<button class="bg-primary text-on-primary text-xs font-semibold px-4 py-1 rounded-full hover:opacity-90 active:opacity-80 transition-opacity">Connect</button>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-6xl mx-auto">
+<header class="mb-10 flex items-end justify-between">
+<div>
+<p class="text-on-surface-variant text-sm font-medium mb-1 tracking-tight">Curation</p>
+<h2 class="text-4xl font-bold text-on-surface tracking-tighter">Favorites</h2>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="format_list_bulleted">format_list_bulleted</span>
+</button>
+</div>
+</header>
+<!-- Folder Section: Production Clusters -->
+<section class="mb-12">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-tertiary" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<h3 class="text-lg font-semibold text-on-surface">Production Clusters</h3>
+<div class="h-[1px] flex-1 bg-surface-container-highest/30 ml-2"></div>
+<span class="text-xs font-mono text-on-surface-variant">4 NODES</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Server Card 1 -->
+<div class="group relative bg-surface-container-low p-5 rounded-xl hover:bg-surface-container transition-all duration-300 active:scale-[0.99]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</div>
+<button class="text-primary active:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h4 class="text-on-surface font-semibold mb-1">Atlas-Core-01</h4>
+<p class="text-xs text-on-surface-variant font-mono mb-4">192.168.1.104</p>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-error-container/20 text-error uppercase tracking-wider">Critical</span>
+<span class="text-[10px] text-on-surface-variant">Last accessed: 2m ago</span>
+</div>
+</div>
+<!-- Server Card 2 -->
+<div class="group relative bg-surface-container-low p-5 rounded-xl hover:bg-surface-container transition-all duration-300 active:scale-[0.99]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2.5 rounded-lg bg-tertiary/10 text-tertiary">
+<span class="material-symbols-outlined" data-icon="dns">dns</span>
+</div>
+<button class="text-primary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h4 class="text-on-surface font-semibold mb-1">DB-Primary-Main</h4>
+<p class="text-xs text-on-surface-variant font-mono mb-4">db.kinetic.io</p>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container/30 text-secondary uppercase tracking-wider">Stable</span>
+<span class="text-[10px] text-on-surface-variant">Last accessed: 1h ago</span>
+</div>
+</div>
+<!-- Server Card 3 -->
+<div class="group relative bg-surface-container-low p-5 rounded-xl hover:bg-surface-container transition-all duration-300 active:scale-[0.99]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2.5 rounded-lg bg-surface-container-highest text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="cloud">cloud</span>
+</div>
+<button class="text-primary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h4 class="text-on-surface font-semibold mb-1">Web-Front-04</h4>
+<p class="text-xs text-on-surface-variant font-mono mb-4">45.23.109.12</p>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container/30 text-secondary uppercase tracking-wider">Active</span>
+<span class="text-[10px] text-on-surface-variant">Last accessed: 12m ago</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Folder Section: Side Projects -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<h3 class="text-lg font-semibold text-on-surface">Side Projects</h3>
+<div class="h-[1px] flex-1 bg-surface-container-highest/30 ml-2"></div>
+<span class="text-xs font-mono text-on-surface-variant">2 NODES</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Server Card 4 -->
+<div class="group relative bg-surface-container-low p-5 rounded-xl hover:bg-surface-container transition-all duration-300 active:scale-[0.99]">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2.5 rounded-lg bg-surface-container-highest text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings_ethernet">settings_ethernet</span>
+</div>
+<button class="text-primary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h4 class="text-on-surface font-semibold mb-1">Local-Test-Pi</h4>
+<p class="text-xs text-on-surface-variant font-mono mb-4">10.0.0.12</p>
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-container-highest text-on-secondary-fixed-variant uppercase tracking-wider">Internal</span>
+<span class="text-[10px] text-on-surface-variant">Offline</span>
+</div>
+</div>
+<!-- Add New Placeholder -->
+<button class="border-2 border-dashed border-surface-container-highest/50 p-5 rounded-xl hover:border-primary/50 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="add_circle">add_circle</span>
+<span class="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors">Add New Host</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+<!-- Detail Sidebar (Mac-style Info Rail) -->
+<aside class="w-80 bg-surface-container-low p-6 hidden xl:block overflow-y-auto border-l-0 shadow-2xl">
+<div class="flex items-center justify-between mb-8">
+<h5 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Selection Info</h5>
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="close">close</span>
+</div>
+<div class="mb-8">
+<div class="h-40 w-full rounded-xl mb-4 bg-surface-container overflow-hidden relative">
+<img alt="Server rack infrastructure" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="high-tech server room with glowing blue lights and rack mounted hardware in a professional data center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCvYXP-xDF4_9w-bKPqtAz0zX8Xpc4IOcUTUrHepZocolm-z4HNeiXGl_i1x2K2aVrS3EkrhKBeN5L6w3M3MtoYF15XXUp-96rUsX8L4DUXmoOC1Y2qTBtauffYnoFMq3G9uAZxhEQjP2RUmwjCjPsPP45t-pc6Olp_cGx-dPKZA4G-PLX9urp4NOkof7uoVUItZIor39eeggQn_m7eWD2pHv2Un5Gna_iDaj0sHrug0aSDF5EsDSkRN_sT99gH9j_jCUkXmqdhlaW"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+</div>
+<h6 class="text-xl font-bold text-on-surface mb-1">Atlas-Core-01</h6>
+<p class="text-xs text-primary font-mono">ssh admin@192.168.1.104</p>
+</div>
+<div class="space-y-6">
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-2">Metrics</span>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-sm text-stone-400">CPU Usage</span>
+<span class="text-sm font-mono text-on-surface">12.4%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm text-stone-400">Memory</span>
+<span class="text-sm font-mono text-on-surface">4.2 / 16 GB</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[28%]"></div>
+</div>
+</div>
+</div>
+<div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-2">Quick Actions</span>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-surface-container-highest/50 hover:bg-surface-container-highest p-3 rounded-lg flex flex-col items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+<span class="text-[10px]">Shell</span>
+</button>
+<button class="bg-surface-container-highest/50 hover:bg-surface-container-highest p-3 rounded-lg flex flex-col items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="folder_zip">folder_zip</span>
+<span class="text-[10px]">SFTP</span>
+</button>
+<button class="bg-surface-container-highest/50 hover:bg-surface-container-highest p-3 rounded-lg flex flex-col items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="monitoring">monitoring</span>
+<span class="text-[10px]">Stats</span>
+</button>
+<button class="bg-surface-container-highest/50 hover:bg-surface-container-highest p-3 rounded-lg flex flex-col items-center gap-2 transition-colors text-error">
+<span class="material-symbols-outlined text-lg" data-icon="power_settings_new">power_settings_new</span>
+<span class="text-[10px]">Reboot</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</body></html>

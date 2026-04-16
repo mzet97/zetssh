@@ -130,7 +130,8 @@ extension SSHTerminalView.Coordinator: SSHClientDelegate {
     func onError(_ error: Error) {
         let text: String
         if case SSHConnectionError.connectionTimedOut = error {
-            text = "\r\n\u{1B}[33m[Conexão encerrada: servidor não respondeu por 3 minutos.]\u{1B}[0m\r\n" +
+            let minutes = Int(AppConstants.Keepalive.intervalSeconds) * AppConstants.Keepalive.maxMissed / 60
+            text = "\r\n\u{1B}[33m[Conexão encerrada: servidor não respondeu por \(minutes) minutos.]\u{1B}[0m\r\n" +
                    "\u{1B}[33m[Selecione a sessão na barra lateral para reconectar.]\u{1B}[0m\r\n"
         } else {
             text = "\r\n\u{1B}[31mErro SSH: \(error.localizedDescription)\u{1B}[0m\r\n"

@@ -1,8 +1,32 @@
 import SwiftUI
 import Sparkle
 
+// MARK: - AppDelegate
+
+/// Ensures the app process fully terminates when the last window is closed,
+/// instead of staying alive in the background (default macOS behaviour).
+final class AppDelegate: NSObject, NSApplicationDelegate {
+
+    func applicationShouldTerminateAfterLastWindowClosed(
+        _ sender: NSApplication
+    ) -> Bool {
+        true
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        // Force-close all windows so SwiftUI dismantles every SSHTerminalView,
+        // which in turn calls RealSSHEngine.disconnect() → closes channels
+        // and shuts down the NIO EventLoopGroup.
+        NSApp.windows.forEach { $0.close() }
+    }
+}
+
+// MARK: - App
+
 @main
 struct zetsshApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     private let updaterController: SPUStandardUpdaterController
 
     init() {
