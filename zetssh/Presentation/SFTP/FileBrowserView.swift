@@ -3,6 +3,7 @@ import SwiftUI
 struct FileBrowserView: View {
     @ObservedObject var viewModel: FileBrowserViewModel
     @Environment(\.dismiss) var dismiss
+    var engine: RealSSHEngine?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -83,6 +84,12 @@ struct FileBrowserView: View {
             Text(viewModel.errorMessage ?? "")
         }
         .frame(minWidth: 460, minHeight: 400)
-        .onAppear { viewModel.loadDirectory() }
+        .onAppear {
+            if let engine {
+                Task { await viewModel.connectSFTP(engine: engine) }
+            } else {
+                viewModel.loadDirectory()
+            }
+        }
     }
 }

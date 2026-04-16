@@ -14,6 +14,10 @@ struct SSHTerminalView: NSViewRepresentable {
     let sessionId:      UUID
     /// Absolute path to the private key file, or `nil` when using password auth.
     let privateKeyPath: String?
+    /// Fired when the connection ends (disconnect, timeout, or error) after a brief delay.
+    var onConnectionEnded: (() -> Void)?
+    /// Fired once after successful authentication with the active engine reference.
+    var onEngineReady:    ((any SSHEngine) -> Void)?
 
     func makeCoordinator() -> Coordinator {
         Coordinator()
@@ -42,6 +46,8 @@ struct SSHTerminalView: NSViewRepresentable {
         context.coordinator.port           = port
         context.coordinator.username       = username
         context.coordinator.privateKeyPath = privateKeyPath
+        context.coordinator.onConnectionEnded = onConnectionEnded
+        context.coordinator.onEngineReady    = onEngineReady
 
         if let keyPath = privateKeyPath {
             // Private key auth: load passphrase from Keychain (may be nil).
@@ -83,6 +89,8 @@ struct SSHTerminalView: NSViewRepresentable {
         var passphrase:     String? = nil
         var didConnect:     Bool    = false
         weak var terminalView: SwiftTerm.TerminalView?
+        var onConnectionEnded: (() -> Void)?
+        var onEngineReady:    ((any SSHEngine) -> Void)?
 
         func connect() {
             guard let engine, let termView = terminalView else { return }
@@ -99,6 +107,7 @@ struct SSHTerminalView: NSViewRepresentable {
                     } else {
                         try await engine.authenticate(password: password)
                     }
+                    self.onEngineReady?(engine)
                 } catch {
                     termView.feed(
                         text: "\r\n\u{1B}[31mConnection failed: \(error.localizedDescription)\u{1B}[0m\r\n"
@@ -119,15 +128,26 @@ extension SSHTerminalView.Coordinator: SSHClientDelegate {
     }
 
     func onError(_ error: Error) {
-        terminalView?.feed(
-            text: "\r\n\u{1B}[31mSSH Error: \(error.localizedDescription)\u{1B}[0m\r\n"
-        )
+        let text: String
+        if case SSHConnectionError.connectionTimedOut = error {
+            text = "\r\n\u{1B}[33m[Conexão encerrada: servidor não respondeu por 3 minutos.]\u{1B}[0m\r\n" +
+                   "\u{1B}[33m[Selecione a sessão na barra lateral para reconectar.]\u{1B}[0m\r\n"
+        } else {
+            text = "\r\n\u{1B}[31mErro SSH: \(error.localizedDescription)\u{1B}[0m\r\n"
+        }
+        terminalView?.feed(text: text)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.onConnectionEnded?()
+        }
     }
 
     func onDisconnected() {
         terminalView?.feed(
-            text: "\r\n\u{1B}[33m[Connection closed. Select a session to reconnect.]\u{1B}[0m\r\n"
+            text: "\r\n\u{1B}[33m[Conexão encerrada. Selecione a sessão para reconectar.]\u{1B}[0m\r\n"
         )
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.onConnectionEnded?()
+        }
     }
 }
 

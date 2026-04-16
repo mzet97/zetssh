@@ -2,10 +2,13 @@ import SwiftUI
 
 struct SessionDetailView: View {
     let session: Session?
+    var tabId: UUID? = nil
+    var onConnectionStateChanged: ((UUID, Bool) -> Void)?
 
     @State private var connectionStarted = false
     @State private var showingTerminalSettings = false
     @State private var showingSFTP = false
+    @State private var activeEngine: (any SSHEngine)?
 
     var body: some View {
         Group {
@@ -16,7 +19,14 @@ struct SessionDetailView: View {
                         port:           session.port,
                         username:       session.username,
                         sessionId:      session.id,
-                        privateKeyPath: session.privateKeyPath
+                        privateKeyPath: session.privateKeyPath,
+                        onConnectionEnded: {
+                            connectionStarted = false
+                            activeEngine = nil
+                        },
+                        onEngineReady: { engine in
+                            activeEngine = engine
+                        }
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
@@ -30,8 +40,13 @@ struct SessionDetailView: View {
             }
         }
         .navigationTitle(session?.name ?? "ZetSSH")
-        .onChange(of: session?.id) { _ in
+        .onChange(of: session?.id) {
             connectionStarted = false
+            activeEngine = nil
+        }
+        .onChange(of: connectionStarted) {
+            guard let tabId else { return }
+            onConnectionStateChanged?(tabId, connectionStarted)
         }
         .toolbar {
             ToolbarItem(placement: .automatic) {
@@ -51,14 +66,32 @@ struct SessionDetailView: View {
                 .help("Abrir File Browser SFTP")
                 .disabled(!connectionStarted)
             }
+            ToolbarItem(placement: .automatic) {
+                Button(role: .destructive) {
+                    activeEngine?.disconnect()
+                    connectionStarted = false
+                    activeEngine = nil
+                } label: {
+                    Label("Desconectar", systemImage: "xmark.circle")
+                }
+                .help("Encerrar sessão SSH")
+                .disabled(!connectionStarted)
+            }
         }
         .sheet(isPresented: $showingTerminalSettings) {
             TerminalSettingsView()
         }
         .sheet(isPresented: $showingSFTP) {
-            Text("SFTP Browser — requer integração NIO (próxima iteração)")
-                .padding()
-                .frame(minWidth: 460, minHeight: 400)
+            if let engine = activeEngine as? RealSSHEngine {
+                FileBrowserView(
+                    viewModel: FileBrowserViewModel(),
+                    engine: engine
+                )
+                .frame(minWidth: 560, minHeight: 480)
+            } else {
+                Text("Conecte-se primeiro para usar o SFTP")
+                    .frame(minWidth: 460, minHeight: 400)
+            }
         }
     }
 

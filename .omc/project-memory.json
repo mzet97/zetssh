@@ -78,8 +78,8 @@
   "hotPaths": [
     {
       "path": "zetssh/Data/Network/RealSSHEngine.swift",
-      "accessCount": 30,
-      "lastAccessed": 1776222999392,
+      "accessCount": 34,
+      "lastAccessed": 1776262338357,
       "type": "file"
     },
     {
@@ -95,15 +95,21 @@
       "type": "file"
     },
     {
+      "path": "zetssh/Presentation/Sessions/SessionDetailView.swift",
+      "accessCount": 13,
+      "lastAccessed": 1776263723891,
+      "type": "file"
+    },
+    {
       "path": "zetssh/Presentation/Sessions/SidebarView.swift",
       "accessCount": 12,
       "lastAccessed": 1776213251003,
       "type": "file"
     },
     {
-      "path": "zetssh/Presentation/Sessions/SessionDetailView.swift",
+      "path": "zetssh/Presentation/Terminal/TerminalView.swift",
       "accessCount": 12,
-      "lastAccessed": 1776219078757,
+      "lastAccessed": 1776262394278,
       "type": "file"
     },
     {
@@ -113,15 +119,9 @@
       "type": "directory"
     },
     {
-      "path": "zetssh/Presentation/Terminal/TerminalView.swift",
-      "accessCount": 9,
-      "lastAccessed": 1776221811924,
-      "type": "file"
-    },
-    {
       "path": "zetssh",
-      "accessCount": 8,
-      "lastAccessed": 1776221809400,
+      "accessCount": 9,
+      "lastAccessed": 1776262130799,
       "type": "directory"
     },
     {
@@ -149,21 +149,21 @@
       "type": "file"
     },
     {
-      "path": "zetssh/Presentation/ContentView.swift",
-      "accessCount": 4,
-      "lastAccessed": 1776211759601,
+      "path": "zetssh/Presentation/Sessions/TabBarView.swift",
+      "accessCount": 5,
+      "lastAccessed": 1776263724970,
       "type": "file"
     },
     {
-      "path": "zetssh/Presentation/Sessions/TabBarView.swift",
-      "accessCount": 4,
-      "lastAccessed": 1776211806837,
+      "path": "zetssh/Presentation/ContentView.swift",
+      "accessCount": 5,
+      "lastAccessed": 1776263725038,
       "type": "file"
     },
     {
       "path": "zetssh/Data/Network/SFTPClient.swift",
-      "accessCount": 4,
-      "lastAccessed": 1776213105413,
+      "accessCount": 5,
+      "lastAccessed": 1776263750550,
       "type": "file"
     },
     {
@@ -173,27 +173,33 @@
       "type": "file"
     },
     {
-      "path": "zetssh/Domain/Models/ActiveSession.swift",
-      "accessCount": 2,
-      "lastAccessed": 1776211755712,
-      "type": "file"
-    },
-    {
-      "path": "zetssh/Presentation/Sessions/TabsViewModel.swift",
-      "accessCount": 2,
-      "lastAccessed": 1776211755753,
+      "path": "zetssh/Data/Network/SSHEngine.swift",
+      "accessCount": 3,
+      "lastAccessed": 1776262309761,
       "type": "file"
     },
     {
       "path": "zetssh/Presentation/Sessions/MultiSessionView.swift",
-      "accessCount": 2,
-      "lastAccessed": 1776211759096,
+      "accessCount": 3,
+      "lastAccessed": 1776263721171,
+      "type": "file"
+    },
+    {
+      "path": "zetssh/Presentation/Sessions/TabsViewModel.swift",
+      "accessCount": 3,
+      "lastAccessed": 1776263721205,
       "type": "file"
     },
     {
       "path": "zetssh/Data/Network/SFTPEngine.swift",
+      "accessCount": 3,
+      "lastAccessed": 1776263750616,
+      "type": "file"
+    },
+    {
+      "path": "zetssh/Domain/Models/ActiveSession.swift",
       "accessCount": 2,
-      "lastAccessed": 1776213072483,
+      "lastAccessed": 1776211755712,
       "type": "file"
     },
     {
@@ -212,12 +218,6 @@
       "path": "zetssh/Presentation/Settings/TerminalPreferencesViewModel.swift",
       "accessCount": 2,
       "lastAccessed": 1776220361631,
-      "type": "file"
-    },
-    {
-      "path": "zetssh/Data/Network/SSHEngine.swift",
-      "accessCount": 1,
-      "lastAccessed": 1776211152602,
       "type": "file"
     },
     {

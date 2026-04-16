@@ -2,13 +2,69 @@ import Foundation
 import NIOCore
 @preconcurrency import NIOSSH
 
-/// Implementa SFTPv3 (draft-ietf-secsh-filexfer v3) sobre um canal NIOSSH.
-/// Os primitivos de baixo nível são stubs — integração NIO completa em fase futura.
+// MARK: - SFTPChannelHandler
+
+final class SFTPChannelHandler: ChannelDuplexHandler, @unchecked Sendable {
+    typealias InboundIn  = SSHChannelData
+    typealias InboundOut = SSHChannelData
+    typealias OutboundIn = ByteBuffer
+    typealias OutboundOut = SSHChannelData
+
+    private var buffer = ByteBuffer()
+    private var pendingReplies: [UInt32: CheckedContinuation<ByteBuffer, Error>] = [:]
+    private let lock = NSLock()
+
+    func register(requestId: UInt32, continuation: CheckedContinuation<ByteBuffer, Error>) {
+        lock.lock(); defer { lock.unlock() }
+        pendingReplies[requestId] = continuation
+    }
+
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        let channelData = unwrapInboundIn(data)
+        guard case .byteBuffer(let buf) = channelData.data else { return }
+        buffer.writeImmutableBuffer(buf)
+        processBuffer()
+    }
+
+    private func processBuffer() {
+        while buffer.readableBytes >= 9 {
+            let length = buffer.getInteger(at: buffer.readerIndex, as: UInt32.self)!
+            let packetSize = Int(length) + 4
+            guard buffer.readableBytes >= packetSize else { break }
+            var packet = buffer.readSlice(length: packetSize)!
+            packet.moveReaderIndex(forwardBy: 4)
+            guard let _ = packet.readInteger(as: UInt8.self),
+                  let reqId  = packet.readInteger(as: UInt32.self) else { break }
+            lock.lock()
+            let cont = pendingReplies.removeValue(forKey: reqId)
+            lock.unlock()
+            cont?.resume(returning: packet)
+        }
+    }
+
+    func write(context: ChannelHandlerContext, data: NIOAny, promise: EventLoopPromise<Void>?) {
+        let buf = unwrapOutboundIn(data)
+        let channelData = SSHChannelData(type: .channel, data: .byteBuffer(buf))
+        context.write(wrapOutboundOut(channelData), promise: promise)
+    }
+
+    func errorCaught(context: ChannelHandlerContext, error: Error) {
+        lock.lock()
+        let pending = pendingReplies
+        pendingReplies.removeAll()
+        lock.unlock()
+        pending.values.forEach { $0.resume(throwing: error) }
+        context.fireErrorCaught(error)
+    }
+}
+
+// MARK: - SFTPClient
 final class SFTPClient: SFTPEngine {
 
     private let channel: Channel
     private var requestId: UInt32 = 0
     private let lock = NSLock()
+    private var currentListingPath = "/"
 
     init(channel: Channel) {
         self.channel = channel
@@ -17,6 +73,7 @@ final class SFTPClient: SFTPEngine {
     // MARK: - SFTPEngine
 
     func listDirectory(path: String) async throws -> [RemoteFileItem] {
+        currentListingPath = path
         let handle = try await openDir(path: path)
         defer { Task { try? await closeHandle(handle) } }
 
@@ -91,7 +148,7 @@ final class SFTPClient: SFTPEngine {
     }
 
     private func readDir(handle: Data) async throws -> [RemoteFileItem] {
-        return try await sendPacketAwaitNameList(type: 12, handle: handle)
+        return try await sendPacketAwaitNameList(type: 12, handle: handle, path: currentListingPath)
     }
 
     private func closeHandle(_ handle: Data) async throws {
@@ -141,26 +198,98 @@ final class SFTPClient: SFTPEngine {
         })
     }
 
-    // MARK: - NIO stubs (integração futura)
+    // MARK: - NIO packet I/O
+
+    private func sendPacket(type: UInt8, payload: (inout ByteBuffer) -> Void) async throws -> ByteBuffer {
+        let reqId = nextRequestId()
+        var body = channel.allocator.buffer(capacity: 64)
+        body.writeInteger(type)
+        body.writeInteger(reqId)
+        payload(&body)
+        var packet = channel.allocator.buffer(capacity: body.readableBytes + 4)
+        packet.writeInteger(UInt32(body.readableBytes))
+        packet.writeImmutableBuffer(body)
+
+        let reply: ByteBuffer = try await withCheckedThrowingContinuation { continuation in
+            channel.pipeline.handler(type: SFTPChannelHandler.self).whenSuccess { handler in
+                handler.register(requestId: reqId, continuation: continuation)
+            }
+            channel.writeAndFlush(packet, promise: nil)
+        }
+        return reply
+    }
 
     private func sendPacketAwaitHandle(type: UInt8, payload: (inout ByteBuffer) -> Void) async throws -> Data {
-        throw SFTPError.protocolError("SFTP NIO integration not yet complete")
+        var reply = try await sendPacket(type: type, payload: payload)
+        guard let handleLength = reply.readInteger(as: UInt32.self),
+              let handleBytes = reply.readBytes(length: Int(handleLength)) else {
+            throw SFTPError.protocolError("Invalid handle response")
+        }
+        return Data(handleBytes)
     }
 
     private func sendPacketAwaitStatus(type: UInt8, payload: (inout ByteBuffer) -> Void) async throws -> UInt32 {
-        throw SFTPError.protocolError("SFTP NIO integration not yet complete")
+        var reply = try await sendPacket(type: type, payload: payload)
+        guard let code = reply.readInteger(as: UInt32.self) else {
+            throw SFTPError.protocolError("Invalid status response")
+        }
+        guard code == 0 else {
+            throw SFTPError.protocolError("SFTP status error: \(code)")
+        }
+        return code
     }
 
     private func sendPacketAwaitData(type: UInt8, payload: (inout ByteBuffer) -> Void) async throws -> Data {
-        throw SFTPError.protocolError("SFTP NIO integration not yet complete")
+        var reply = try await sendPacket(type: type, payload: payload)
+        guard let dataLength = reply.readInteger(as: UInt32.self),
+              let dataBytes = reply.readBytes(length: Int(dataLength)) else {
+            throw SFTPError.protocolError("Invalid data response")
+        }
+        return Data(dataBytes)
     }
 
-    private func sendPacketAwaitNameList(type: UInt8, handle: Data) async throws -> [RemoteFileItem] {
-        throw SFTPError.protocolError("SFTP NIO integration not yet complete")
+    private func sendPacketAwaitNameList(type: UInt8, handle: Data, path: String) async throws -> [RemoteFileItem] {
+        var payload = channel.allocator.buffer(capacity: handle.count + 16)
+        payload.writeSSHHandle(handle)
+        var reply = try await sendPacket(type: type, payload: { buf in
+            buf.writeBuffer(&payload)
+        })
+        guard let count = reply.readInteger(as: UInt32.self) else {
+            throw SFTPError.protocolError("Invalid name list response")
+        }
+        var items: [RemoteFileItem] = []
+        for _ in 0..<count {
+            guard let nameLen = reply.readInteger(as: UInt32.self),
+                  let nameBytes = reply.readBytes(length: Int(nameLen)),
+                  let name = String(bytes: nameBytes, encoding: .utf8),
+                  let longNameLen = reply.readInteger(as: UInt32.self)
+            else { break }
+            _ = reply.readSlice(length: Int(longNameLen))
+            let _ = reply.readInteger(as: UInt32.self)
+            let fullPath = path + (path.hasSuffix("/") ? "" : "/") + name
+            items.append(RemoteFileItem(
+                id: fullPath,
+                name: name,
+                path: fullPath,
+                isDirectory: false,
+                size: 0,
+                modifiedAt: Date()
+            ))
+        }
+        return items
     }
 
     private func sendPacketAwaitAttrs(type: UInt8, handle: Data) async throws -> UInt64 {
-        throw SFTPError.protocolError("SFTP NIO integration not yet complete")
+        var payload = channel.allocator.buffer(capacity: handle.count + 8)
+        payload.writeSSHHandle(handle)
+        var reply = try await sendPacket(type: type, payload: { buf in
+            buf.writeBuffer(&payload)
+        })
+        let flags = reply.readInteger(as: UInt32.self) ?? 0
+        if flags & 0x01 != 0 {
+            return reply.readInteger(as: UInt64.self) ?? 0
+        }
+        return 0
     }
 }
 

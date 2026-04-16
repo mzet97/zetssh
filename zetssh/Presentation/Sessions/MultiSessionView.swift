@@ -16,7 +16,16 @@ struct MultiSessionView: View {
                     // Keep all SessionDetailView instances alive simultaneously
                     // so each tab's @State (connectionStarted) is preserved.
                     ForEach(tabsVM.tabs) { tab in
-                        SessionDetailView(session: tab.session)
+                        SessionDetailView(
+                            session: tab.session,
+                            tabId: tab.id,
+                            onConnectionStateChanged: { tabId, connected in
+                                tabsVM.updateConnectionState(
+                                    connected ? .connected : .disconnected,
+                                    forTabId: tabId
+                                )
+                            }
+                        )
                             .opacity(tabsVM.selectedTabId == tab.id ? 1 : 0)
                             .allowsHitTesting(tabsVM.selectedTabId == tab.id)
                             .zIndex(tabsVM.selectedTabId == tab.id ? 1 : 0)

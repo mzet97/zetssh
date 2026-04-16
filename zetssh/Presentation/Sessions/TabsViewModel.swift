@@ -39,6 +39,11 @@ final class TabsViewModel: ObservableObject {
         }
     }
 
+    func updateConnectionState(_ state: TabConnectionState, forTabId id: UUID) {
+        guard let index = tabs.firstIndex(where: { $0.id == id }) else { return }
+        tabs[index].connectionState = state
+    }
+
     // MARK: - Convenience
 
     /// The currently selected `ActiveSession`, if any.

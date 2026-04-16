@@ -11,13 +11,30 @@ final class FileBrowserViewModel: ObservableObject {
     @Published var downloadProgress: Double = 0
     @Published var uploadProgress: Double = 0
 
-    private let sftp: any SFTPEngine
+    private var sftp: (any SFTPEngine)?
 
     init(sftp: any SFTPEngine) {
         self.sftp = sftp
     }
 
+    init() {
+        self.sftp = nil
+    }
+
+    func connectSFTP(engine: RealSSHEngine) async {
+        do {
+            sftp = try await engine.openSFTPClient()
+            loadDirectory()
+        } catch {
+            errorMessage = "Falha ao conectar SFTP: \(error.localizedDescription)"
+        }
+    }
+
     func loadDirectory(_ path: String = "/") {
+        guard let sftp else {
+            errorMessage = "SFTP não conectado"
+            return
+        }
         isLoading = true
         errorMessage = nil
         Task {
@@ -47,6 +64,7 @@ final class FileBrowserViewModel: ObservableObject {
     }
 
     func download(item: RemoteFileItem) {
+        guard let sftp else { return }
         let panel = NSSavePanel()
         panel.nameFieldStringValue = item.name
         guard panel.runModal() == .OK, let dest = panel.url else { return }
@@ -63,6 +81,7 @@ final class FileBrowserViewModel: ObservableObject {
     }
 
     func upload(to remotePath: String) {
+        guard let sftp else { return }
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -82,6 +101,7 @@ final class FileBrowserViewModel: ObservableObject {
     }
 
     func deleteItem(_ item: RemoteFileItem) {
+        guard let sftp else { return }
         Task {
             do {
                 try await sftp.delete(path: item.path)

@@ -29,6 +29,12 @@ struct TabBarView: View {
         let isSelected = tabsVM.selectedTabId == tab.id
 
         HStack(spacing: 4) {
+            Circle()
+                .fill(tab.connectionState == .connected ? Color.green :
+                      tab.connectionState == .connecting ? Color.yellow :
+                      tab.connectionState == .disconnected ? Color.red : Color.clear)
+                .frame(width: 6, height: 6)
+
             Text(tab.label)
                 .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
                 .lineLimit(1)

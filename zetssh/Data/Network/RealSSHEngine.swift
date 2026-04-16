@@ -157,6 +157,7 @@ public final class RealSSHEngine: SSHEngine {
 
         let bootstrap = ClientBootstrap(group: group)
             .channelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+            .channelOption(ChannelOptions.socketOption(.so_keepalive), value: 1)
             .connectTimeout(.seconds(15))
             .channelInitializer { channel in
                 channel.pipeline.addHandlers([
@@ -205,9 +206,14 @@ public final class RealSSHEngine: SSHEngine {
                     // causaria deadlock (future nunca completa).
                     sshHandler.createChannel(promise, channelType: .session) { childChannel, _ in
                         AppLogger.shared.log("[SSH 3.5] Configurando pipeline do canal...", category: .network, level: .info)
-                        return childChannel.pipeline.addHandler(
+                        return childChannel.pipeline.addHandlers([
+                            SSHKeepaliveHandler(
+                                interval: .seconds(60),
+                                maxMissed: 3,
+                                delegate: capturedDelegate
+                            ),
                             SSHInboundDataHandler(delegate: capturedDelegate)
-                        )
+                        ])
                     }
                 }
             }
@@ -550,6 +556,41 @@ public final class RealSSHEngine: SSHEngine {
         }
         return conn
     }
+
+    func openSFTPClient() async throws -> SFTPClient {
+        guard let conn = channel, connectionState == .connected else {
+            throw SSHConnectionError.unknown
+        }
+
+        let sftpChannel = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Channel, Error>) in
+            let promise = conn.eventLoop.makePromise(of: Channel.self)
+            promise.futureResult.whenComplete { result in
+                switch result {
+                case .success(let ch): continuation.resume(returning: ch)
+                case .failure(let err): continuation.resume(throwing: err)
+                }
+            }
+            conn.pipeline.handler(type: NIOSSHHandler.self).whenSuccess { handler in
+                handler.createChannel(promise, channelType: .session) { ch, _ in
+                    ch.pipeline.addHandler(SFTPChannelHandler())
+                }
+            }
+        }
+
+        try await sftpChannel.triggerUserOutboundEvent(
+            SSHChannelRequestEvent.SubsystemRequest(subsystem: "sftp", wantReply: true)
+        ).get()
+
+        var initBuf = sftpChannel.allocator.buffer(capacity: 9)
+        initBuf.writeInteger(UInt32(5))
+        initBuf.writeInteger(UInt8(1))
+        initBuf.writeInteger(UInt32(0))
+        initBuf.writeInteger(UInt32(3))
+        let initData = SSHChannelData(type: .channel, data: .byteBuffer(initBuf))
+        try await sftpChannel.writeAndFlush(initData).get()
+
+        return SFTPClient(channel: sftpChannel)
+    }
 }
 
 // MARK: - Private Delegates
@@ -635,6 +676,71 @@ private final class HostKeyVerificationDelegate: NIOSSHClientServerAuthenticatio
         }
     }
 }
+
+// MARK: - SSHKeepaliveHandler
+
+/// Detecta conexões SSH mortas por inatividade.
+/// Se nenhum dado for recebido em `interval * maxMissed` segundos, encerra o canal
+/// e notifica o delegate com `connectionTimedOut`.
+private final class SSHKeepaliveHandler: ChannelInboundHandler, @unchecked Sendable {
+    typealias InboundIn = SSHChannelData
+    typealias InboundOut = SSHChannelData
+
+    private let interval: TimeAmount
+    private let maxMissed: Int
+    private weak var delegate: (any SSHClientDelegate)?
+
+    private var missedIntervals = 0
+    private var keepaliveTask: RepeatedTask?
+
+    init(interval: TimeAmount, maxMissed: Int, delegate: (any SSHClientDelegate)?) {
+        self.interval = interval
+        self.maxMissed = maxMissed
+        self.delegate = delegate
+    }
+
+    func channelActive(context: ChannelHandlerContext) {
+        let channel = context.channel
+        keepaliveTask = context.eventLoop.scheduleRepeatedTask(
+            initialDelay: interval,
+            delay: interval,
+            notifying: nil
+        ) { [weak self] task in
+            guard let self else { task.cancel(); return }
+            self.missedIntervals += 1
+            if self.missedIntervals >= self.maxMissed {
+                task.cancel()
+                AppLogger.shared.log(
+                    "[SSH Keepalive] Sem resposta após \(self.maxMissed) intervalos. Encerrando.",
+                    category: .network, level: .warning
+                )
+                let d = self.delegate
+                DispatchQueue.main.async { d?.onError(SSHConnectionError.connectionTimedOut) }
+                channel.close(promise: nil)
+            }
+        }
+        context.fireChannelActive()
+    }
+
+    func channelInactive(context: ChannelHandlerContext) {
+        keepaliveTask?.cancel()
+        keepaliveTask = nil
+        context.fireChannelInactive()
+    }
+
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        missedIntervals = 0
+        context.fireChannelRead(data)
+    }
+
+    func errorCaught(context: ChannelHandlerContext, error: Error) {
+        keepaliveTask?.cancel()
+        keepaliveTask = nil
+        context.fireErrorCaught(error)
+    }
+}
+
+// MARK: - SSHInboundDataHandler
 
 private final class SSHInboundDataHandler: ChannelInboundHandler, @unchecked Sendable {
     typealias InboundIn = SSHChannelData

@@ -1,5 +1,12 @@
 import Foundation
 
+enum TabConnectionState: Equatable {
+    case idle
+    case connecting
+    case connected
+    case disconnected
+}
+
 /// Represents a single open SSH tab in the multi-tab interface.
 /// This is an in-memory model only — it is never persisted to GRDB.
 struct ActiveSession: Identifiable, Equatable {
@@ -10,6 +17,7 @@ struct ActiveSession: Identifiable, Equatable {
     let session: Session
     /// Display label shown in the tab bar. Defaults to `session.name`.
     var label: String
+    var connectionState: TabConnectionState = .idle
 
     init(session: Session) {
         self.id = UUID()
