@@ -1,10 +1,12 @@
 import SwiftUI
+import GRDB
 
 struct KeyManagementView: View {
     @ObservedObject var viewModel: SessionViewModel
 
     @State private var selectedKeyId: String?
     @State private var searchText = ""
+    @State private var showRemoveKeyConfirmation = false
 
     private struct KeyEntry: Identifiable {
         let id: String
@@ -38,6 +40,16 @@ struct KeyManagementView: View {
             keyDetail
         }
         .background(KineticColors.surfaceContainer)
+        .alert("Remove SSH Key", isPresented: $showRemoveKeyConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Remove", role: .destructive) {
+                if let entry = keyEntries.first(where: { $0.id == selectedKeyId }) {
+                    removeKey(entry)
+                }
+            }
+        } message: {
+            Text("This will remove the key reference from ZetSSH. The key file on disk will not be deleted.")
+        }
     }
 
     private var keyList: some View {
@@ -61,6 +73,8 @@ struct KeyManagementView: View {
                         .foregroundStyle(KineticColors.onSurfaceVariant)
                 }
                 .buttonStyle(.plain)
+                .help("Generate new SSH key pair")
+                .onTapGesture { generateKeyPair() }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
@@ -163,8 +177,8 @@ struct KeyManagementView: View {
                                 .truncationMode(.middle)
                         }
                         Spacer()
-                        KineticButton("Copy Public Key", icon: "doc.on.doc", style: .ghost) {}
-                        KineticButton("Remove", icon: "trash", style: .destructive) {}
+                        KineticButton("Copy Public Key", icon: "doc.on.doc", style: .ghost) { copyPublicKey(entry) }
+                        KineticButton("Remove", icon: "trash", style: .destructive) { showRemoveKeyConfirmation = true }
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
@@ -244,5 +258,90 @@ struct KeyManagementView: View {
             panel.directoryURL = sshDir
         }
         panel.runModal()
+    }
+
+    private func copyPublicKey(_ entry: KeyEntry) {
+        let pubKeyPath = entry.path + ".pub"
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: pubKeyPath),
+              let contents = try? String(contentsOfFile: pubKeyPath, encoding: .utf8) else {
+            let alert = NSAlert()
+            alert.messageText = "Public key not found"
+            alert.informativeText = "No .pub file found at:\n\(pubKeyPath)"
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+            return
+        }
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(contents.trimmingCharacters(in: .whitespacesAndNewlines), forType: .string)
+    }
+
+    private func removeKey(_ entry: KeyEntry) {
+        let sessionsUsingKey = viewModel.sessions.filter { $0.privateKeyPath == entry.path }
+        for session in sessionsUsingKey {
+            var updated = session
+            updated.privateKeyPath = nil
+            do {
+                try AppDatabase.shared.dbWriter.write { db in try updated.save(db) }
+            } catch {
+                viewModel.errorMessage = "Error updating session: \(error.localizedDescription)"
+            }
+        }
+        selectedKeyId = nil
+    }
+
+    private func generateKeyPair() {
+        let alert = NSAlert()
+        alert.messageText = "Generate New SSH Key Pair"
+        alert.informativeText = "Choose the key type to generate:"
+        alert.alertStyle = .informational
+
+        let menu = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
+        menu.addItems(withTitles: ["Ed25519 (Recommended)", "RSA 4096", "ECDSA 256"])
+        alert.accessoryView = menu
+
+        alert.addButton(withTitle: "Generate")
+        alert.addButton(withTitle: "Cancel")
+
+        guard let window = NSApp.keyWindow else { return }
+        alert.beginSheetModal(for: window) { response in
+            guard response == .alertFirstButtonReturn else { return }
+
+            let keyType = menu.titleOfSelectedItem ?? "Ed25519 (Recommended)"
+            let typeArg: String
+            switch keyType {
+            case let t where t.hasPrefix("RSA"): typeArg = "rsa"
+            case let t where t.hasPrefix("ECDSA"): typeArg = "ecdsa"
+            default: typeArg = "ed25519"
+            }
+
+            let sshDir = FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent(".ssh", isDirectory: true).path
+            let filename = "zetssh_key_\(typeArg)_\(Int(Date().timeIntervalSince1970))"
+            let keyPath = "\(sshDir)/\(filename)"
+
+            let task = Process()
+            task.executableURL = URL(fileURLWithPath: "/usr/bin/ssh-keygen")
+            task.arguments = ["-t", typeArg, "-f", keyPath, "-N", "", "-C", "zetssh@\(Date())"]
+
+            do {
+                try task.run()
+                task.waitUntilExit()
+                if task.terminationStatus == 0 {
+                    let message = NSAlert()
+                    message.messageText = "Key Generated"
+                    message.informativeText = "Saved to:\n\(keyPath)\n\nYou can now assign it to sessions."
+                    message.alertStyle = .informational
+                    message.addButton(withTitle: "OK")
+                    message.runModal()
+                } else {
+                    viewModel.errorMessage = "ssh-keygen failed with exit code \(task.terminationStatus)"
+                }
+            } catch {
+                viewModel.errorMessage = "Failed to run ssh-keygen: \(error.localizedDescription)"
+            }
+        }
     }
 }

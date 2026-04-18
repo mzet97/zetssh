@@ -10,6 +10,7 @@ final class FileBrowserViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var downloadProgress: Double = 0
     @Published var uploadProgress: Double = 0
+    @Published var statusMessage: String?
 
     private var sftp: (any SFTPEngine)?
 
@@ -110,5 +111,30 @@ final class FileBrowserViewModel: ObservableObject {
                 errorMessage = "Exclusão falhou: \(error.localizedDescription)"
             }
         }
+    }
+
+    func createDirectory(name: String) {
+        guard let sftp else { return }
+        let newPath = currentPath + (currentPath.hasSuffix("/") ? "" : "/") + name
+        Task {
+            do {
+                try await sftp.createDirectory(path: newPath)
+                loadDirectory(currentPath)
+                statusMessage = "Pasta '\(name)' criada"
+            } catch {
+                errorMessage = "Erro ao criar pasta: \(error.localizedDescription)"
+            }
+        }
+    }
+
+    func copyPathToClipboard() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(currentPath, forType: .string)
+        statusMessage = "Caminho copiado"
+    }
+
+    func refresh() {
+        loadDirectory(currentPath)
     }
 }

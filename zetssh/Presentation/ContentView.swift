@@ -7,12 +7,15 @@ struct ContentView: View {
     @State private var activeTab: TopNavTab = .terminals
     @State private var selectedSection: NavSection = .hosts
     @State private var showingAddSession = false
+    @State private var searchText = ""
+    @State private var isSplitView = false
 
     var body: some View {
         HStack(spacing: 0) {
             SidebarView(
                 viewModel: sessionVM,
                 tabsVM: tabsVM,
+                searchText: searchText,
                 onSectionChanged: { section in
                     selectedSection = section
                     if activeTab != .terminals {
@@ -26,8 +29,10 @@ struct ContentView: View {
             VStack(spacing: 0) {
                 TopNavBar(
                     activeTab: $activeTab,
+                    searchText: $searchText,
                     onConnect: { showingAddSession = true },
-                    onAdd: { showingAddSession = true }
+                    onAdd: { showingAddSession = true },
+                    onToggleSplit: { isSplitView.toggle() }
                 )
 
                 mainContent
@@ -39,6 +44,8 @@ struct ContentView: View {
         .sheet(isPresented: $showingAddSession) {
             SessionFormView { newSession, credentials in
                 sessionVM.save(newSession, credentials: credentials)
+                tabsVM.open(session: newSession)
+                selectedSection = .hosts
             }
         }
         .alert("Erro", isPresented: Binding(
@@ -59,7 +66,15 @@ struct ContentView: View {
         case .terminals:
             switch selectedSection {
             case .hosts:
-                MultiSessionView(tabsVM: tabsVM)
+                MultiSessionView(tabsVM: tabsVM, onToggleFavorite: { session in
+                    sessionVM.toggleFavorite(session)
+                }, onRecordConnectionStarted: { session in
+                    sessionVM.recordConnectionStarted(session: session)
+                }, onRecordConnectionEnded: {
+                    sessionVM.recordConnectionEnded()
+                }, onAddSession: {
+                    showingAddSession = true
+                })
             case .favorites:
                 FavoritesView(viewModel: sessionVM) { session in
                     tabsVM.open(session: session)

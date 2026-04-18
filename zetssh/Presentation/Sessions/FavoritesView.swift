@@ -1,10 +1,14 @@
 import SwiftUI
+import AppKit
 
 struct FavoritesView: View {
     @ObservedObject var viewModel: SessionViewModel
     var onConnect: (Session) -> Void
 
     @State private var selectedSession: Session?
+    @State private var showingSFTP = false
+    @State private var showingRebootConfirmation = false
+    @State private var rebootTargetSession: Session?
 
     var body: some View {
         HStack(spacing: 0) {
@@ -17,6 +21,28 @@ struct FavoritesView: View {
             }
         }
         .background(KineticColors.surface)
+        .sheet(isPresented: $showingSFTP) {
+            if let session = selectedSession {
+                sftpSheet(for: session)
+            }
+        }
+        .alert("Confirm Reboot", isPresented: $showingRebootConfirmation) {
+            Button("Cancel", role: .cancel) {
+                rebootTargetSession = nil
+            }
+            Button("Reboot", role: .destructive) {
+                if let session = rebootTargetSession {
+                    rebootServer(session)
+                }
+                rebootTargetSession = nil
+            }
+        } message: {
+            if let session = rebootTargetSession {
+                Text("Are you sure you want to reboot \(session.name)? This will disconnect all active sessions.")
+            } else {
+                Text("Are you sure you want to reboot this server?")
+            }
+        }
     }
 
     private var mainContent: some View {
@@ -27,12 +53,17 @@ struct FavoritesView: View {
                 if viewModel.sessions.isEmpty {
                     emptyState
                 } else {
-                    folderSection(
-                        title: "All Servers",
-                        icon: "folder.fill",
-                        iconColor: KineticColors.tertiary,
-                        sessions: viewModel.sessions
-                    )
+                    let favorites = viewModel.sessions.filter(\.isFavorite)
+                    if favorites.isEmpty {
+                        emptyState
+                    } else {
+                        folderSection(
+                            title: "Favorites",
+                            icon: "star.fill",
+                            iconColor: KineticColors.primary,
+                            sessions: favorites
+                        )
+                    }
                 }
             }
             .padding(32)
@@ -184,10 +215,13 @@ struct FavoritesView: View {
                             .foregroundStyle(KineticColors.onSurfaceVariant)
 
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-                            quickActionButton(icon: "terminal", label: "Shell") { onConnect(session) }
-                            quickActionButton(icon: "folder.zip", label: "SFTP") {}
-                            quickActionButton(icon: "chart.bar", label: "Stats") {}
-                            quickActionButton(icon: "power", label: "Reboot", isDestructive: true) {}
+                             quickActionButton(icon: "terminal", label: "Shell") { onConnect(session) }
+                             quickActionButton(icon: "folder.zip", label: "SFTP") { showingSFTP = true }
+                             quickActionButton(icon: "doc.on.doc", label: "Copy SSH") { copySSHCommand(session) }
+                             quickActionButton(icon: "power", label: "Reboot", isDestructive: true) {
+                                 rebootTargetSession = session
+                                 showingRebootConfirmation = true
+                             }
                         }
                     }
                 }
@@ -216,6 +250,58 @@ struct FavoritesView: View {
         .buttonStyle(.plain)
     }
 
+    private func copySSHCommand(_ session: Session) {
+        var cmd = "ssh"
+        if let keyPath = session.privateKeyPath {
+            cmd += " -i \(keyPath)"
+        }
+        cmd += " \(session.username)@\(session.host)"
+        if session.port != 22 {
+            cmd += " -p \(session.port)"
+        }
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(cmd, forType: .string)
+    }
+
+    @ViewBuilder
+    private func sftpSheet(for session: Session) -> some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("SFTP — \(session.name)")
+                    .font(KineticFont.headline.font)
+                    .foregroundStyle(KineticColors.onSurface)
+                Spacer()
+                Button("Close") { showingSFTP = false }
+                    .keyboardShortcut(.cancelAction)
+            }
+            .padding(16)
+            .background(KineticColors.surfaceContainerLow)
+
+            Text("Connect to this server first to use SFTP.\nOpen a terminal session, then use the SFTP toolbar button.")
+                .font(KineticFont.body.font)
+                .foregroundStyle(KineticColors.onSurfaceVariant)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(minWidth: 460, minHeight: 400)
+        .background(KineticColors.surface)
+    }
+
+    private func rebootServer(_ session: Session) {
+        let cmd = "sudo shutdown -r now"
+        let fullCommand = "ssh \(session.username)@\(session.host) -p \(session.port) \(cmd)"
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(fullCommand, forType: .string)
+
+        let alert = NSAlert()
+        alert.messageText = "Reboot Command Copied"
+        alert.informativeText = "The reboot command has been copied to your clipboard.\n\nPaste it in a terminal to execute:\n\(fullCommand)"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+    }
+
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "star")
@@ -224,7 +310,7 @@ struct FavoritesView: View {
             Text("No favorite servers yet")
                 .font(KineticFont.body.font)
                 .foregroundStyle(KineticColors.onSurfaceVariant)
-            Text("Add sessions to see them here")
+            Text("Mark sessions as favorites to see them here")
                 .font(KineticFont.caption.font)
                 .foregroundStyle(KineticColors.outline)
         }

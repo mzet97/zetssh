@@ -147,6 +147,26 @@ final class AppDatabase {
             }
         }
 
+        migrator.registerMigration("v5") { db in
+            try db.alter(table: "session") { t in
+                t.add(column: "isFavorite", .boolean).notNull().defaults(to: false)
+            }
+        }
+
+        migrator.registerMigration("v6") { db in
+            try db.create(table: "sessionHistory") { t in
+                t.column("id",             .text).primaryKey()
+                t.column("sessionId",      .text).notNull()
+                t.column("sessionName",    .text).notNull()
+                t.column("host",           .text).notNull()
+                t.column("username",       .text).notNull()
+                t.column("port",           .integer).notNull()
+                t.column("connectedAt",    .datetime).notNull()
+                t.column("disconnectedAt", .datetime)
+                t.column("duration",       .double)
+            }
+        }
+
         return migrator
     }
 }

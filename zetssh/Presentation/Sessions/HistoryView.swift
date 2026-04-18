@@ -5,8 +5,9 @@ struct HistoryView: View {
     var onReconnect: (Session) -> Void
 
     private struct HistoryEntry: Identifiable {
-        let id = UUID()
-        let session: Session
+        let id: UUID
+        let session: Session?
+        let sessionHistory: SessionHistory?
         let date: String
         let time: String
         let duration: String
@@ -14,12 +15,35 @@ struct HistoryView: View {
     }
 
     private var entries: [HistoryEntry] {
-        viewModel.sessions.map { session in
-            HistoryEntry(
+        viewModel.historyEntries.map { history in
+            let session = viewModel.sessions.first(where: { $0.id == history.sessionId })
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+
+            let durationStr: String
+            if let dur = history.duration {
+                let hours = Int(dur) / 3600
+                let minutes = Int(dur) % 3600 / 60
+                let seconds = Int(dur) % 60
+                if hours > 0 {
+                    durationStr = "\(hours)h \(minutes)m"
+                } else if minutes > 0 {
+                    durationStr = "\(minutes)m \(seconds)s"
+                } else {
+                    durationStr = "\(seconds)s"
+                }
+            } else {
+                durationStr = "Em andamento"
+            }
+
+            return HistoryEntry(
+                id: history.id,
                 session: session,
-                date: "—",
-                time: "—",
-                duration: "—",
+                sessionHistory: history,
+                date: dateFormatter.string(from: history.connectedAt),
+                time: dateFormatter.string(from: history.disconnectedAt ?? history.connectedAt),
+                duration: durationStr,
                 iconColor: KineticColors.primary
             )
         }
@@ -122,13 +146,13 @@ struct HistoryView: View {
                         RoundedRectangle(cornerRadius: 6)
                             .fill(entry.iconColor.opacity(0.1))
                     )
-                Text(entry.session.name)
+                Text(entry.sessionHistory?.sessionName ?? entry.session?.name ?? "Unknown")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(KineticColors.onSurface)
             }
             .frame(minWidth: 200, alignment: .leading)
 
-            Text(entry.session.host)
+            Text(entry.sessionHistory?.host ?? entry.session?.host ?? "—")
                 .font(.system(size: 11, design: .monospaced))
                 .foregroundStyle(KineticColors.onSurfaceVariant)
                 .padding(.horizontal, 6)
@@ -155,9 +179,10 @@ struct HistoryView: View {
                 .frame(minWidth: 100, alignment: .leading)
 
             HStack(spacing: 8) {
-                KineticButton("View Logs", style: .ghost) {}
-                KineticButton("Reconnect", style: .primary) {
-                    onReconnect(entry.session)
+                if let session = entry.session {
+                    KineticButton("Reconnect", style: .primary) {
+                        onReconnect(session)
+                    }
                 }
             }
             .frame(minWidth: 180, alignment: .trailing)
@@ -204,7 +229,7 @@ struct HistoryView: View {
                         .tracking(0.2)
                         .foregroundStyle(KineticColors.onSurfaceVariant)
 
-                    if let first = entries.first?.session.name {
+                    if let first = entries.first?.sessionHistory?.sessionName {
                         Text(first)
                             .font(.system(size: 13, weight: .bold))
                             .foregroundStyle(KineticColors.onSurface)

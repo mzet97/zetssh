@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftTerm
 import NIOCore
 import GRDB
+import AppKit
 
 // MARK: - SSHTerminalView
 
@@ -38,6 +39,7 @@ struct SSHTerminalView: NSViewRepresentable {
 
         termView.terminalDelegate = context.coordinator
         context.coordinator.terminalView = termView
+        termView.menu = context.coordinator.buildContextMenu()
 
         let engine = RealSSHEngine()
         engine.delegate = context.coordinator
@@ -91,6 +93,72 @@ struct SSHTerminalView: NSViewRepresentable {
         weak var terminalView: SwiftTerm.TerminalView?
         var onConnectionEnded: (() -> Void)?
         var onEngineReady:    ((any SSHEngine) -> Void)?
+
+        // MARK: - Context Menu
+
+        func buildContextMenu() -> NSMenu {
+            let menu = NSMenu()
+
+            let copyItem = NSMenuItem(
+                title: "Copy",
+                action: #selector(copySelection),
+                keyEquivalent: "c"
+            )
+            copyItem.target = self
+            menu.addItem(copyItem)
+
+            let pasteItem = NSMenuItem(
+                title: "Paste",
+                action: #selector(pasteFromClipboard),
+                keyEquivalent: "v"
+            )
+            pasteItem.target = self
+            menu.addItem(pasteItem)
+
+            menu.addItem(NSMenuItem.separator())
+
+            let selectAllItem = NSMenuItem(
+                title: "Select All",
+                action: #selector(selectAllText),
+                keyEquivalent: "a"
+            )
+            selectAllItem.target = self
+            menu.addItem(selectAllItem)
+
+            menu.addItem(NSMenuItem.separator())
+
+            let clearItem = NSMenuItem(
+                title: "Clear Terminal",
+                action: #selector(clearTerminal),
+                keyEquivalent: "k"
+            )
+            clearItem.target = self
+            menu.addItem(clearItem)
+
+            return menu
+        }
+
+        @objc private func copySelection() {
+            terminalView?.copy(self)
+        }
+
+        @objc private func pasteFromClipboard() {
+            let pasteboard = NSPasteboard.general
+            guard let clipboardString = pasteboard.string(forType: .string) else { return }
+            guard let data = clipboardString.data(using: .utf8) else { return }
+            engine?.sendData(Array(data))
+        }
+
+        @objc private func selectAllText() {
+            terminalView?.selectAll(self)
+        }
+
+        @objc private func clearTerminal() {
+            // Send clear screen ANSI escape to the terminal display
+            terminalView?.feed(text: "\u{1B}[2J\u{1B}[H")
+            // Also send "clear" command to the remote shell
+            engine?.sendData(Array("clear\n".utf8))
+        }
 
         func connect() {
             guard let engine, let termView = terminalView else { return }
@@ -167,6 +235,14 @@ extension SSHTerminalView.Coordinator: TerminalViewDelegate {
     func setTerminalTitle(source: SwiftTerm.TerminalView, title: String) {}
     func hostCurrentDirectoryUpdate(source: SwiftTerm.TerminalView, directory: String?) {}
     func requestOpenLink(source: SwiftTerm.TerminalView, link: String, params: [String: String]) {}
-    func clipboardCopy(source: SwiftTerm.TerminalView, content: Data) {}
+    func clipboardCopy(source: SwiftTerm.TerminalView, content: Data) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        if let text = String(data: content, encoding: .utf8) {
+            pasteboard.setString(text, forType: .string)
+        } else {
+            pasteboard.setData(content, forType: .string)
+        }
+    }
     func rangeChanged(source: SwiftTerm.TerminalView, startY: Int, endY: Int) {}
 }

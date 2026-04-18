@@ -2,6 +2,10 @@ import SwiftUI
 
 struct TabBarView: View {
     @ObservedObject var tabsVM: TabsViewModel
+    var onAddTab: (() -> Void)?
+
+    @State private var showingAddSession = false
+    @StateObject private var sessionVM = SessionViewModel()
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -10,7 +14,9 @@ struct TabBarView: View {
                     tabButton(for: tab)
                 }
 
-                Button {} label: {
+                Button {
+                    onAddTab?()
+                } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(KineticColors.outline)
@@ -20,6 +26,7 @@ struct TabBarView: View {
                 .buttonStyle(.plain)
                 .padding(.leading, 4)
                 .padding(.bottom, 4)
+                .help("Open new session")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -84,7 +91,8 @@ struct TabBarView: View {
         .onTapGesture {
             tabsVM.selectedTabId = tab.id
         }
-        .onHover { _ in
+        .onHover { isHovered in
+            // Visual hover feedback is handled by SwiftUI hit testing
         }
     }
 }

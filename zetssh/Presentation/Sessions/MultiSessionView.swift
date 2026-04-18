@@ -2,11 +2,15 @@ import SwiftUI
 
 struct MultiSessionView: View {
     @ObservedObject var tabsVM: TabsViewModel
+    var onToggleFavorite: ((Session) -> Void)?
+    var onRecordConnectionStarted: ((Session) -> Void)?
+    var onRecordConnectionEnded: (() -> Void)?
+    var onAddSession: (() -> Void)?
 
     var body: some View {
         VStack(spacing: 0) {
             if !tabsVM.tabs.isEmpty {
-                TabBarView(tabsVM: tabsVM)
+                TabBarView(tabsVM: tabsVM, onAddTab: { onAddSession?() })
             }
 
             ZStack {
@@ -24,6 +28,15 @@ struct MultiSessionView: View {
                                     connected ? .connected : .disconnected,
                                     forTabId: tabId
                                 )
+                            },
+                            onToggleFavorite: { session in
+                                onToggleFavorite?(session)
+                            },
+                            onRecordConnectionStarted: { session in
+                                onRecordConnectionStarted?(session)
+                            },
+                            onRecordConnectionEnded: {
+                                onRecordConnectionEnded?()
                             }
                         )
                             .opacity(tabsVM.selectedTabId == tab.id ? 1 : 0)

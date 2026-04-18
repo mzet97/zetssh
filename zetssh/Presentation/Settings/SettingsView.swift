@@ -1,4 +1,5 @@
 import SwiftUI
+import GRDB
 
 struct SettingsView: View {
     enum SettingsCategory: String, CaseIterable {
@@ -21,6 +22,17 @@ struct SettingsView: View {
     @State private var notificationsEnabled = true
     @State private var keepaliveInterval = 30
     @State private var agentForwarding = false
+    @State private var fontSize = 13
+    @State private var selectedCursorStyle: CursorStyle = .block
+    @State private var showClearHistoryConfirmation = false
+
+    @StateObject private var terminalPrefsVM = TerminalPreferencesViewModel()
+
+    enum CursorStyle: String, CaseIterable {
+        case block = "Block"
+        case beam = "Beam"
+        case underline = "Underline"
+    }
 
     var body: some View {
         HStack(spacing: 0) {
@@ -29,6 +41,14 @@ struct SettingsView: View {
             settingsCanvas
         }
         .background(KineticColors.surface)
+        .alert("Clear History", isPresented: $showClearHistoryConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Clear All", role: .destructive) {
+                clearConnectionHistory()
+            }
+        } message: {
+            Text("This will permanently delete all connection history entries. This cannot be undone.")
+        }
     }
 
     private var categoryRail: some View {
@@ -104,18 +124,20 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 20) {
             sectionHeader("Terminal Appearance", subtitle: "Customize your workspace.")
 
+            let activeName = terminalPrefsVM.activeProfile?.name ?? "Default"
+
             settingsCard {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Theme")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(KineticColors.onSurface)
-                        Text("Current: Obsidian Dusk")
+                        Text("Current: \(activeName)")
                             .font(.system(size: 11))
                             .foregroundStyle(KineticColors.onSurfaceVariant)
                     }
                     Spacer()
-                    Text("OBSIDIAN DUSK")
+                    Text(activeName.uppercased())
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(KineticColors.primary)
                         .padding(.horizontal, 8)
@@ -134,13 +156,16 @@ struct SettingsView: View {
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(KineticColors.onSurface)
                     Spacer()
-                    Stepper(value: $keepaliveInterval, in: 8...32, step: 1) {
-                        Text("\(keepaliveInterval) pt")
+                    Stepper(value: $fontSize, in: 8...32, step: 1) {
+                        Text("\(fontSize) pt")
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundStyle(KineticColors.onSurfaceVariant)
                     }
                 }
                 .padding(16)
+                .onChange(of: fontSize) { newSize in
+                    terminalPrefsVM.updateFontSize(Double(newSize))
+                }
 
                 GhostDivider()
 
@@ -150,9 +175,11 @@ struct SettingsView: View {
                         .foregroundStyle(KineticColors.onSurface)
                     Spacer()
                     HStack(spacing: 8) {
-                        cursorOption("Block", isSelected: true)
-                        cursorOption("Beam", isSelected: false)
-                        cursorOption("Underline", isSelected: false)
+                        ForEach(CursorStyle.allCases, id: \.self) { style in
+                            cursorOption(style.rawValue, isSelected: selectedCursorStyle == style) {
+                                selectedCursorStyle = style
+                            }
+                        }
                     }
                 }
                 .padding(16)
@@ -227,7 +254,9 @@ struct SettingsView: View {
                                 .foregroundStyle(KineticColors.onSurfaceVariant)
                         }
                         Spacer()
-                        KineticButton("Clear", style: .destructive) {}
+                        KineticButton("Clear", style: .destructive) {
+                            showClearHistoryConfirmation = true
+                        }
                     }
                     .padding(16)
                 }
@@ -307,7 +336,7 @@ struct SettingsView: View {
         .padding(16)
     }
 
-    private func cursorOption(_ name: String, isSelected: Bool) -> some View {
+    private func cursorOption(_ name: String, isSelected: Bool, onSelect: @escaping () -> Void) -> some View {
         Text(name)
             .font(.system(size: 11, weight: .medium))
             .foregroundStyle(isSelected ? KineticColors.primary : KineticColors.onSurfaceVariant)
@@ -317,6 +346,8 @@ struct SettingsView: View {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(isSelected ? KineticColors.surfaceContainerHighest : .clear)
             )
+            .contentShape(Rectangle())
+            .onTapGesture { onSelect() }
     }
 
     private var statusBar: some View {
@@ -332,5 +363,19 @@ struct SettingsView: View {
                 .foregroundStyle(KineticColors.onSurfaceVariant)
         }
         .padding(.top, 8)
+    }
+
+    private func clearConnectionHistory() {
+        do {
+            try AppDatabase.shared.dbWriter.write { db in
+                try SessionHistory.deleteAll(db)
+            }
+        } catch {
+            AppLogger.shared.log(
+                "Failed to clear history: \(error)",
+                category: .database,
+                level: .error
+            )
+        }
     }
 }

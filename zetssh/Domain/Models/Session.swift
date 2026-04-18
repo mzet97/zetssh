@@ -9,4 +9,5 @@ struct Session: Identifiable, Hashable, Codable, FetchableRecord, PersistableRec
     var port: Int
     var username: String
     var privateKeyPath: String?
+    var isFavorite: Bool = false
 }

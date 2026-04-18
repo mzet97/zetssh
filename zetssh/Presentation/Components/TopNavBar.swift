@@ -2,10 +2,12 @@ import SwiftUI
 
 struct TopNavBar: View {
     @Binding var activeTab: TopNavTab
+    @Binding var searchText: String
     var onConnect: () -> Void = {}
     var onAdd: () -> Void = {}
+    var onToggleSplit: (() -> Void)? = nil
 
-    @State private var searchText = ""
+    @State private var showingAboutSheet = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -42,8 +44,8 @@ struct TopNavBar: View {
             // MARK: - Action Buttons
             HStack(spacing: 2) {
                 actionButton(icon: "plus", action: onAdd)
-                actionButton(icon: "rectangle.split.1x2", action: {})
-                actionButton(icon: "info.circle", action: {})
+                actionButton(icon: "rectangle.split.1x2", action: { onToggleSplit?() })
+                actionButton(icon: "info.circle", action: { showingAboutSheet = true })
             }
 
             // MARK: - Connect CTA
@@ -71,6 +73,9 @@ struct TopNavBar: View {
         )
         .overlay(alignment: .bottom) {
             GhostDivider()
+        }
+        .sheet(isPresented: $showingAboutSheet) {
+            AboutSheetView()
         }
     }
 

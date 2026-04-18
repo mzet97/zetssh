@@ -4,6 +4,7 @@ struct SidebarView: View {
     @ObservedObject var viewModel: SessionViewModel
     @ObservedObject var tabsVM: TabsViewModel
 
+    var searchText: String = ""
     var onSectionChanged: ((NavSection) -> Void)?
 
     @State private var selectedSection: NavSection = .hosts
@@ -11,6 +12,14 @@ struct SidebarView: View {
     @State private var showingAddSession = false
     @State private var showingImportSSHConfig = false
     @StateObject private var sshConfigImportVM = SSHConfigImportViewModel()
+
+    private var filteredTabs: [ActiveSession] {
+        guard !searchText.isEmpty else { return tabsVM.tabs }
+        return tabsVM.tabs.filter { tab in
+            tab.label.localizedCaseInsensitiveContains(searchText) ||
+            tab.session.host.localizedCaseInsensitiveContains(searchText)
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -51,7 +60,7 @@ struct SidebarView: View {
 
                 ScrollView {
                     VStack(spacing: 4) {
-                        ForEach(tabsVM.tabs) { tab in
+                        ForEach(filteredTabs) { tab in
                             activeConnectionRow(for: tab)
                         }
                     }
@@ -120,6 +129,8 @@ struct SidebarView: View {
         .sheet(isPresented: $showingAddSession) {
             SessionFormView { newSession, credentials in
                 viewModel.save(newSession, credentials: credentials)
+                tabsVM.open(session: newSession)
+                onSectionChanged?(.hosts)
             }
         }
         .sheet(isPresented: $showingImportSSHConfig) {
@@ -235,7 +246,7 @@ enum NavSection: String, CaseIterable {
 
     var icon: String {
         switch self {
-        case .hosts: return "dns"
+        case .hosts: return "server.rack"
         case .favorites: return "star"
         case .history: return "clock.arrow.circlepath"
         }
