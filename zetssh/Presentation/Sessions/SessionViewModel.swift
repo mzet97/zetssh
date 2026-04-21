@@ -106,6 +106,10 @@ final class SessionViewModel: ObservableObject {
         }
     }
 
+    func update(_ session: Session, credentials: SessionCredentials) {
+        save(session, credentials: credentials)
+    }
+
     func delete(_ session: Session) {
         do {
             try AppDatabase.shared.dbWriter.write { db in try session.delete(db) }

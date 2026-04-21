@@ -28,7 +28,13 @@ struct SessionFormView: View {
     @State private var saveToKeychain: Bool = true
     @State private var isDragTargeted = false
 
+    private let existingSession: Session?
     var onSave: (Session, SessionCredentials) -> Void
+
+    init(existingSession: Session? = nil, onSave: @escaping (Session, SessionCredentials) -> Void) {
+        self.existingSession = existingSession
+        self.onSave = onSave
+    }
 
     private var trimmedHost: String { host.trimmingCharacters(in: .whitespacesAndNewlines) }
     private var trimmedUsername: String { username.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -61,6 +67,18 @@ struct SessionFormView: View {
                 .strokeBorder(Color.white.opacity(0.1), lineWidth: 1)
         )
         .shadow(color: .black.opacity(0.6), radius: 20, y: 10)
+        .onAppear {
+            if let session = existingSession {
+                name = session.name
+                host = session.host
+                port = "\(session.port)"
+                username = session.username
+                if let key = session.privateKeyPath {
+                    authMode = .privateKey
+                    keyPath = key
+                }
+            }
+        }
     }
 
     private var headerBar: some View {
@@ -253,7 +271,7 @@ struct SessionFormView: View {
 
     private func pickKeyFile() {
         let panel = NSOpenPanel()
-        panel.title = "Selecionar chave privada SSH"
+        panel.title = "Select SSH Private Key"
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
@@ -271,14 +289,16 @@ struct SessionFormView: View {
     private func save() {
         guard let portValue = portInt else { return }
         let sessionName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let sessionId = existingSession?.id ?? UUID()
         let newSession = Session(
-            id: UUID(),
-            folderId: nil,
+            id: sessionId,
+            folderId: existingSession?.folderId,
             name: sessionName.isEmpty ? trimmedHost : sessionName,
             host: trimmedHost,
             port: portValue,
             username: trimmedUsername,
-            privateKeyPath: authMode == .privateKey ? keyPath : nil
+            privateKeyPath: authMode == .privateKey ? keyPath : nil,
+            isFavorite: existingSession?.isFavorite ?? false
         )
 
         let credentials: SessionCredentials

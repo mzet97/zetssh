@@ -9,6 +9,8 @@ struct ContentView: View {
     @State private var showingAddSession = false
     @State private var searchText = ""
     @State private var isSplitView = false
+    @State private var sessionToEdit: Session?
+    @State private var showingEditSession = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -48,6 +50,14 @@ struct ContentView: View {
                 selectedSection = .hosts
             }
         }
+        .sheet(isPresented: $showingEditSession) {
+            if let session = sessionToEdit {
+                SessionFormView(existingSession: session) { updatedSession, credentials in
+                    sessionVM.update(updatedSession, credentials: credentials)
+                    sessionToEdit = nil
+                }
+            }
+        }
         .alert("Erro", isPresented: Binding(
             get: { sessionVM.errorMessage != nil },
             set: { if !$0 { sessionVM.errorMessage = nil } }
@@ -66,15 +76,29 @@ struct ContentView: View {
         case .terminals:
             switch selectedSection {
             case .hosts:
-                MultiSessionView(tabsVM: tabsVM, onToggleFavorite: { session in
-                    sessionVM.toggleFavorite(session)
-                }, onRecordConnectionStarted: { session in
-                    sessionVM.recordConnectionStarted(session: session)
-                }, onRecordConnectionEnded: {
-                    sessionVM.recordConnectionEnded()
-                }, onAddSession: {
-                    showingAddSession = true
-                })
+                if tabsVM.tabs.isEmpty {
+                    HostsListView(
+                        viewModel: sessionVM,
+                        searchText: searchText,
+                        onConnect: { session in
+                            tabsVM.open(session: session)
+                        },
+                        onEdit: { session in
+                            sessionToEdit = session
+                            showingEditSession = true
+                        }
+                    )
+                } else {
+                    MultiSessionView(tabsVM: tabsVM, onToggleFavorite: { session in
+                        sessionVM.toggleFavorite(session)
+                    }, onRecordConnectionStarted: { session in
+                        sessionVM.recordConnectionStarted(session: session)
+                    }, onRecordConnectionEnded: {
+                        sessionVM.recordConnectionEnded()
+                    }, onAddSession: {
+                        showingAddSession = true
+                    })
+                }
             case .favorites:
                 FavoritesView(viewModel: sessionVM) { session in
                     tabsVM.open(session: session)

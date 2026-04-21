@@ -12,6 +12,8 @@ struct SidebarView: View {
     @State private var showingAddSession = false
     @State private var showingImportSSHConfig = false
     @StateObject private var sshConfigImportVM = SSHConfigImportViewModel()
+    @State private var showingDeleteConfirmation = false
+    @State private var sessionToDelete: Session?
 
     private var filteredTabs: [ActiveSession] {
         guard !searchText.isEmpty else { return tabsVM.tabs }
@@ -105,7 +107,8 @@ struct SidebarView: View {
                     guard let id = highlightedSessionId,
                           let session = viewModel.sessions.first(where: { $0.id == id })
                     else { return }
-                    deleteSession(session)
+                    sessionToDelete = session
+                    showingDeleteConfirmation = true
                 } label: {
                     Image(systemName: "minus")
                         .font(.system(size: 14, weight: .medium))
@@ -139,6 +142,23 @@ struct SidebarView: View {
                 sessionVM: viewModel,
                 isPresented: $showingImportSSHConfig
             )
+        }
+        .alert("Delete Session", isPresented: $showingDeleteConfirmation) {
+            Button("Cancel", role: .cancel) {
+                sessionToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                if let session = sessionToDelete {
+                    deleteSession(session)
+                    sessionToDelete = nil
+                }
+            }
+        } message: {
+            if let session = sessionToDelete {
+                Text("Delete \"\(session.name)\"? This cannot be undone.")
+            } else {
+                Text("Delete this session?")
+            }
         }
     }
 
